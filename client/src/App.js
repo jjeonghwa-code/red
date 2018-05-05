@@ -26,11 +26,12 @@ class App extends Component {
       messageInfo: {},
     };
     this.messageQueue = [];
-    setInterval(() => {
-      const { types, selected } = this.props.language;
-      console.log(this.props.language);
-      this.props.setLanguage((selected + 1) % types.length);
-    }, 1000);
+    this.setLanguage();
+    // setInterval(() => {
+    //   const { types, selected } = this.props.language;
+    //   console.log(this.props.language);
+    //   this.props.setLanguage((selected + 1) % types.length);
+    // }, 1000);
     this.props.requestAuth();
   }
   componentWillReceiveProps(nextProps) {
@@ -46,6 +47,12 @@ class App extends Component {
       }
     }
   }
+  setLanguage = () => {
+    const lang = window.LANGUAGE || 'kr';
+    const { setLanguage, language } = this.props;
+    const selected = language.types.findIndex(o => o === lang);
+    setLanguage(selected > -1 ? selected : 1);
+  };
   processMessageQueue = () => {
     if (this.messageQueue.length > 0) {
       this.setState({

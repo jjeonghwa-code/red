@@ -67,9 +67,17 @@ app.use('/api', api);
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
   const sendParsedHTML = (req, res) => {
-    console.log(res.locals);
+    let lang = 'kr';
+    if (res.locals && res.locals.country) {
+      switch(res.locals.country) {
+        case 'US': lang = 'en'; break;
+        case 'JP': lang = 'jp'; break;
+        case 'KR': lang = 'kr'; break;
+        default: lang = 'en'; break;
+      }
+    }
     fs.readFile(path.join(__dirname, '../', 'client/build', 'index.html'), 'utf8', (err, data) => {
-      res.send(data.replace(/__LANGUAGE__/, '"kr"')).end();
+      res.send(data.replace(/__LANGUAGE__/, `"${lang}"`)).end();
     });
   };
   app.get('/',sendParsedHTML);

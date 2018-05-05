@@ -11,7 +11,6 @@ import Footer from './components/Footer';
 
 class Scene extends React.Component {
   render() {
-    console.log(window.LANGUAGE);
     return (
       <React.Fragment>
         <Layout>
