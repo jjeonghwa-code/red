@@ -4,27 +4,36 @@ import {
 } from './actions';
 
 const initialState = {
-  open: false,
-  message: '',
+  status: 'CLOSED',
+  info: {},
+  queue: [],
 };
 
 export default (state = initialState, action) => {
-  console.log(action);
   if (action.error) {
     return update(state, {
-      open: { $set: true },
-      message: { $set: action.error },
+      queue: {
+        $push: [{
+          message: action.error,
+          key: new Date().getTime(),
+        }],
+      },
     });
   }
   switch (action.type) {
-    case ACTIONS.ON:
+    case ACTIONS.PROCESS:
       return update(state, {
-        open: { $set: true },
-        message: { $set: action.message },
+        status: { $set: 'PROCESS' },
+        info: { $set: action.info },
+        queue: { $set: action.queue },
       });
-    case ACTIONS.OFF:
+    case ACTIONS.CLOSING:
       return update(state, {
-        open: { $set: false },
+        status: { $set: 'CLOSING' },
+      });
+    case ACTIONS.CLOSED:
+      return update(state, {
+        status: { $set: 'CLOSED' },
       });
     default:
       return state;

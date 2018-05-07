@@ -1,0 +1,10 @@
+{
+  "Order": ["Orders", "주문내역", "注文"],
+  "Name": ["Name", "이름", "名"],
+  "CompanyName": ["Company Name", "업체 이름", "会社の名"],
+  "Thumbnail": ["Thumbnail", "썸네일", "サムネイル"],
+  "Size": ["Size", "크기", "サイズ"],
+  "Quantity": ["Quantity", "수량", "数量"],
+  "Price": ["Price", "가격", "価格"],
+  "Date": ["Date", "날짜", "日"]
+}

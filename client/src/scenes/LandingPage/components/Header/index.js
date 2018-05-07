@@ -27,7 +27,7 @@ const styles = {
 };
 class Component extends React.Component {
   render () {
-    const { classes, translate } = this.props;
+    const { classes, translate, handleClick } = this.props;
     return (
       <div className={classes.root}>
         <AppBar className={classes.appBar} position="static">
@@ -35,8 +35,14 @@ class Component extends React.Component {
             <div className={classes.flex}>
               <img height={40} src="/logo.png" />
             </div>
-            <Button className={classes.button}>{lang.Login[translate]}</Button>
-            <Button className={classes.button}>{lang.Contact[translate]}</Button>
+            <Button
+              className={classes.button}
+              onClick={() => handleClick('login')}
+            >{lang.Login[translate]}</Button>
+            <Button
+              className={classes.button}
+              onClick={() => handleClick('contact')}
+            >{lang.Contact[translate]}</Button>
           </Toolbar>
         </AppBar>
       </div>

@@ -1,0 +1,15 @@
+{
+  "Type": ["Type", "타입", "タイプ"],
+  "ServiceManager": ["Service Manager", "서비스 관리자", "サービスマネージャ"],
+  "Supervisor": ["Supervisor", "슈퍼바이저", "スーパーバイザ"],
+  "Franchisee": ["Franchisee", "가맹점", "加盟店"],
+  "Select": ["Select", "선택", "選択"],
+  "PasswordChar": ["More than 8 character", "8자 이상", "8文字以上"],
+  "Password": ["Password", "비밀번호", "パスワード"],
+  "Name": ["Name", "이름", "名"],
+  "Phone": ["Phone Number", "전화번호", "電話番号"],
+  "Email": ["e-mail", "이메일", "Eメール"],
+  "CompanyName": ["Company Name", "업체 이름", "会社の名"],
+  "CompanyLocation": ["Company Location", "업체 장소", "会社の所在地"],
+  "SupervisorName": ["Supervisor Company", "슈퍼바이저 업체", "スーパーバイザーの会社"]
+}

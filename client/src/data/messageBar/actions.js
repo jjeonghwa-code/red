@@ -2,32 +2,25 @@ import {
   createActionTypes,
 } from '../../modules/reduxHelper';
 
-const ON = 'ON';
-const OFF = 'OFF';
-const ACTIONS = createActionTypes('data/messageBar', [ON, OFF]);
+const PROCESS = 'PROCESS';
+const CLOSING = 'CLOSING';
+const CLOSED = 'CLOSED';
+const ACTIONS = createActionTypes('data/messageBar', [PROCESS, CLOSING, CLOSED]);
 
-const off = () => {
-  return {
-    type: ACTIONS[OFF],
-    open: false,
-  };
-};
-const on = (input) => {
-  let message;
-  if (typeof input === 'string') {
-    message = input;
-  } else {
-    message = input.message;
-  }
-  return {
-    type: ACTIONS[ON],
-    open: true,
-    message,
-  };
-};
-
+const closed = () => ({
+  type: ACTIONS[CLOSED],
+});
+const closing = () => ({
+  type: ACTIONS[CLOSING],
+});
+const process = ({ info, queue }) => ({
+  type: ACTIONS[PROCESS],
+  info,
+  queue,
+});
 export {
   ACTIONS,
-  on,
-  off,
+  closed,
+  closing,
+  process,
 };

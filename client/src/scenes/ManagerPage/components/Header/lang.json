@@ -1,0 +1,9 @@
+{
+  "Title": ["Red Editor", "레드 에디터", "レッドエディタ"],
+  "Contact": ["Contact", "문의", "お問い合わせ"],
+  "Order": ["Order", "주문하기", "オーダ"],
+  "Logout": ["Log Out", "로그아웃", "ログアウト"],
+  "FranchiseeLogin": ["Login to Franchisee Account", "가맹점 로그인", "加盟店ログイン"],
+  "FranchiseeLogout": ["Log Out of Franchisee Account", "가맹점 로그아웃", "加盟店ログアウト"],
+  "AccountInfo": ["Account Info", "계정 정보", "アカウント情報"]
+}

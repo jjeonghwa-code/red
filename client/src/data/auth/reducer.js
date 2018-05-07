@@ -5,7 +5,6 @@ import update from 'react-addons-update';
 
 const initialState = {
   loading: false,
-  error: null,
   response: null,
 };
 
@@ -28,7 +27,6 @@ export default (state = initialState, action) => {
       return update(state, {
         $set: {
           loading: false,
-          error: action.error,
         },
       });
     default:

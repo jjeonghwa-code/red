@@ -7,11 +7,13 @@ import lang from './lang';
 const styles = theme => ({
   textWrapper: {
     textAlign: 'center',
-    padding: theme.spacing.unit * 6,
+    paddingTop: theme.spacing.unit * 10,
+    paddingBottom: theme.spacing.unit * 10,
+
   },
   headline: {
     fontSize: 40,
-    marginBottom: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 8,
   },
   subheading: {
     fontSize: 20,

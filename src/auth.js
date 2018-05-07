@@ -12,13 +12,18 @@ const { Strategy } = HttpBearer;
 passport.use(new Strategy(async (id, cb) => {
   try {
     const account = await Account
-      .findOne({ _id: id })
+      .findById(id)
       .select({ password: 0 })
-      .exec();
+      .populate('rootId');
     if (!account) {
       return cb(null, { unauthorized: true });
     }
-    return cb(null, fromMongo(account.toObject()));
+    const obj = account.toObject();
+    if(obj.rootId) {
+      obj.root = obj.rootId;
+      obj.rootId = obj.root._id;
+    }
+    return cb(null, fromMongo(obj));
   } catch (error) {
     return cb(null, { unauthorized: true });
   }
@@ -30,7 +35,7 @@ export default function (req, res, next) {
       user && !Object.hasOwnProperty.call(user, 'unauthorized') && !user.unauthorized ?
         user : null;
     if (err) { return next(err); }
-    if (!userFound) { return res.status(401).json({ message: '로그인이 필요합니다.' }); }
+    if (!userFound) { return res.status(401).json({ message: 'Unauthorized' }); }
     delete userFound.password;
     req.user = userFound;
     return next();

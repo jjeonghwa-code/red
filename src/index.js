@@ -17,7 +17,22 @@ app.use(ipCountry.setup({
   fallbackCountry: 'US',
   exposeInfo: false,
 }));
-
+const LANGUAGE_TYPES = ['en', 'kr', 'jp'];
+app.use((req, res, next) => {
+  if (res.locals) {
+    let lang = 'kr';
+    switch(res.locals.country) {
+      case 'US': lang = 'en'; break;
+      case 'JP': lang = 'jp'; break;
+      case 'KR': lang = 'kr'; break;
+      default: lang = 'en'; break;
+    }
+    res.locals.lang = lang;
+    const langSelected = LANGUAGE_TYPES.findIndex(o => o === lang);
+    res.locals.langSelected = langSelected > -1 ? langSelected : 1;
+  }
+  next();
+});
 app.set('trust proxy', true);
 
 // Add the request logger before anything else so that it can
@@ -68,13 +83,8 @@ app.use('/api', api);
 if (process.env.NODE_ENV === 'production') {
   const sendParsedHTML = (req, res) => {
     let lang = 'kr';
-    if (res.locals && res.locals.country) {
-      switch(res.locals.country) {
-        case 'US': lang = 'en'; break;
-        case 'JP': lang = 'jp'; break;
-        case 'KR': lang = 'kr'; break;
-        default: lang = 'en'; break;
-      }
+    if (res.locals) {
+      lang = res.locals.lang || lang;
     }
     fs.readFile(path.join(__dirname, '../', 'client/build', 'index.html'), 'utf8', (err, data) => {
       res.send(data.replace(/__LANGUAGE__/, `"${lang}"`)).end();
