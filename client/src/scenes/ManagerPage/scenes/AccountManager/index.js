@@ -76,9 +76,9 @@ class Scene extends React.Component {
             <Table
               title={lang.Account[translate]}
               data={accountList.response.map(o => ({
-                companyName: o.company ? o.company.name : '',
-                rootCompanyName: o.root && o.root.company ? o.root.company.name : '',
                 ...o,
+                companyName: o.company ? o.company.name : '',
+                supervisorName: o.root && o.root.company ? o.root.company.name : '',
               }))}
               handleRowClick={this.handleTableRowClick}
               handleMenuClick={this.handleTableMenuClick}
