@@ -82,7 +82,7 @@ class Component extends React.Component {
     if (name) this.props.handleClick(name);
   };
   render () {
-    const { classes, translate, loading, franchisee, handleClick, account } = this.props;
+    const { classes, translate, loading, franchisee, handleClick, account, editorModeOn } = this.props;
     const { anchorEl } = this.state;
     return (
       <div className={classes.root}>
@@ -125,14 +125,14 @@ class Component extends React.Component {
               {lang.Contact[translate]}
             </Button>
             <Button
-              disabled
+              disabled={!editorModeOn}
               // disabled={account.type === 'serviceManager'}
               color="secondary"
               variant="raised"
               className={classes.orderButton}
               onClick={() => handleClick('order')}
             >
-              {lang.Order[translate]}
+              { editorModeOn ? '저장':lang.Order[translate]}
             </Button>
           </div>
         </div>

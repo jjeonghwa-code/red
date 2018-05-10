@@ -29,6 +29,7 @@ function* get({ params }) {
     const Editor = new RedEditorSDK({
       userId,
       accessToken: token,
+      sandboxMode: true,
     });
     yield put(editor.success(params, {
       editor: Editor,

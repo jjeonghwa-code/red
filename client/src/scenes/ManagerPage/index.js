@@ -166,6 +166,7 @@ class Scene extends React.Component {
           loading={franchiseeLogin.loading}
           franchisee={franchiseeLogin.response}
           handleClick={this.handleHeaderClick}
+          editorModeOn={editorModeOn}
         />
         {
           editorModeOn ?

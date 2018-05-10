@@ -93,7 +93,7 @@ class Scene extends React.Component {
             <Error/>
         }
         <FormDialog
-          title={`${lang.Account[translate]} ${selectedRow ? lang.Update[translate]:lang.Create[translate]}`}
+          title={`${selectedRow ? lang.Update[translate]:lang.Create[translate]}`}
           loading={accountCreate.loading || accountUpdate.loading}
           open={formDialogOn}
           onClose={() => this.setState({
