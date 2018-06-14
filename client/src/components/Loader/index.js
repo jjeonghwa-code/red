@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { Loader } from 'react-loaders';
 import 'loaders.css/loaders.min.css';
+import classNames from 'classnames';
 
 const styles = theme => ({
   layout: {
@@ -17,9 +18,15 @@ const styles = theme => ({
     flexDirection: 'column',
     background: 'rgb(0,0,0,0.2)',
   },
+  global: {
+    position: 'fixed',
+    zIndex: theme.zIndex.drawer * 2,
+  }
 });
-export default withStyles(styles)(({ classes }) => (
-  <div className={classes.layout}>
+export default withStyles(styles)(({ classes, isGlobal }) => (
+  <div className={classNames(classes.layout, {
+    [classes.global]: isGlobal,
+  })}>
     <Loader type="line-scale" color="#3e4553" active/>
   </div>
 ));

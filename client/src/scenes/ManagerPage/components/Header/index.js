@@ -6,6 +6,7 @@ import Text from 'material-ui/Typography';
 import IconAccount from '@material-ui/icons/AccountCircle';
 import IconHelp from '@material-ui/icons/HelpOutline';
 import IconFranchisee from '@material-ui/icons/Home';
+import classNames from 'classnames';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Loader from '../../../../components/Loader';
 import lang from './lang';
@@ -41,9 +42,9 @@ const styles = theme => ({
   },
   accountText: {
     fontSize: 16,
-    cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
+    cursor: 'pointer',
   },
   account: {
     height: '100%',
@@ -82,7 +83,16 @@ class Component extends React.Component {
     if (name) this.props.handleClick(name);
   };
   render () {
-    const { classes, translate, loading, franchisee, handleClick, account, editorModeOn } = this.props;
+    const {
+      classes,
+      translate,
+      loading,
+      franchisee,
+      handleClick,
+      account,
+      editorMode,
+      disabled,
+    } = this.props;
     const { anchorEl } = this.state;
     return (
       <div className={classes.root}>
@@ -113,7 +123,7 @@ class Component extends React.Component {
                     aria-haspopup="true"
                     onClick={this.handleClick}
                   >
-                    <IconFranchisee className={classes.icon}/>{franchisee.company.name}
+                    <IconFranchisee className={classes.icon}/>{franchisee.name}
                   </Text> : null
               }
             </div>
@@ -125,14 +135,13 @@ class Component extends React.Component {
               {lang.Contact[translate]}
             </Button>
             <Button
-              disabled={!editorModeOn}
-              // disabled={account.type === 'serviceManager'}
+              disabled={disabled}
               color="secondary"
               variant="raised"
               className={classes.orderButton}
-              onClick={() => handleClick('order')}
+              onClick={() => handleClick(editorMode ? 'save':'order')}
             >
-              { editorModeOn ? '저장':lang.Order[translate]}
+              { editorMode ? '저장':lang.Order[translate]}
             </Button>
           </div>
         </div>

@@ -20,10 +20,18 @@ function decompose(obj) {
   }
   return arr;
 }
-function changeablesArrToWorksheet (changeables = []) {
+function makeBaseWorksheet (changeables, projectId) {
   // [{ key, value }, { key, value }]
-  let height = 0;
+  let height = 1;
   let worksheet = {};
+  worksheet[`A${height}`] = {
+    t: 's',
+    v: 'projectId',
+  };
+  worksheet[`B${height}`] = {
+    t: 's',
+    v: projectId,
+  };
   changeables.forEach((o, objectI) => {
     height += 1;
     worksheet[`A${height}`] = {
@@ -55,11 +63,9 @@ function makeFormWorksheet (ws) {
   //make form template ex) #1, #2..
   let objectNowIndex = 0; // #x
   let formHeight = 1;
-  console.log(ws);
-  for(let i = 1; i<= heightOfWs; i += 1) {
+  for(let i = 2; i<= heightOfWs; i += 1) {
     const label = ws[`A${i}`].v;
     if (label.indexOf('#') === 0) {
-      console.log(label);
       objectNowIndex = label.slice(label.indexOf('#') + 1, label.length); // ex) #1, #2
       worksheet[`A${formHeight}`] = {
         t: 's',
@@ -81,13 +87,13 @@ function makeFormWorksheet (ws) {
     Form: worksheet,
   };
 }
-export default function (changeables) {
-  const worksheet = changeablesArrToWorksheet(changeables.map(decompose));
+export default function (changeables = [], projectId = '') {
+  const worksheet = makeBaseWorksheet(changeables.map(decompose), projectId);
   const { Raw, Form } = makeFormWorksheet(worksheet);
   const new_workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(new_workbook, Raw, "Raw");
   XLSX.utils.book_append_sheet(new_workbook, Form, "Form");
-  XLSX.writeFile(new_workbook, 'abc.xlsx', {
+  XLSX.writeFile(new_workbook, 'data.xlsx', {
     type: 'string',
   })
 }

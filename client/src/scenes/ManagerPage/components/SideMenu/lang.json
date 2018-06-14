@@ -1,6 +1,6 @@
 {
   "Account": ["Account", "계정", "アカウント"],
   "Setting": ["Setting", "설정", "設定"],
-  "Cart": ["Cart", "장바구니", "カート"],
+  "Project": ["Project", "프로젝트", "プロジェクト"],
   "Order": ["Orders", "주문내역", "注文"]
 }

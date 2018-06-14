@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   Switch,
   Route,
+  withRouter,
 } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import MessageBar from './components/MessageBar';
@@ -48,7 +49,7 @@ const mapStateToProps = (state) => ({
   auth: state.data.auth,
   language: state.data.language,
 });
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   requestAuth: auth.request,
   setLanguage: language.set,
-})(App);
+})(App));

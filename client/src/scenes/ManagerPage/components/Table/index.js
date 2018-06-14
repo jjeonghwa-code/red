@@ -34,6 +34,7 @@ class Component extends React.Component {
         (a, b) => (a[initialOrderBy] < b[initialOrderBy] ? -1 : 1)),
       page: 0,
       rowsPerPage: 5,
+      hoveredItemId: null, // only for thumbnails
     };
   }
   handleRequestSort = (event, property) => {
@@ -96,9 +97,8 @@ class Component extends React.Component {
   };
   render() {
     const { classes, translate, handleRowClick, title, disabled } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page, hoveredItemId } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
     return (
       <PaperLayout>
         <Toolbar
@@ -144,7 +144,24 @@ class Component extends React.Component {
                     }
                     {
                       this.columnData.map(o => (
-                        <TableCell key={o.id} onClick={() => handleRowClick(n.id)}>{n[o.id]}</TableCell>
+                        <TableCell
+                          key={o.id}
+                          onClick={() => handleRowClick(n.id)}
+                        >
+                          {
+                            o.thumbnails ?
+                              <img
+                                width={150}
+                                src={hoveredItemId === n.id ? n.thumbnails[1] : n.thumbnails[0]}
+                                onMouseEnter={() => this.setState({
+                                  hoveredItemId: n.id,
+                                })}
+                                onMouseLeave={() => this.setState({
+                                  hoveredItemId: null,
+                                })}
+                              /> : n[o.id]
+                          }
+                        </TableCell>
                       ))
                     }
                   </TableRow>

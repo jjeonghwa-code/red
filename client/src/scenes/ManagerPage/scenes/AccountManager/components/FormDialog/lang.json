@@ -7,9 +7,8 @@
   "PasswordChar": ["More than 8 character", "8자 이상", "8文字以上"],
   "Password": ["Password", "비밀번호", "パスワード"],
   "Name": ["Name", "이름", "名"],
+  "Location": ["Location", "위치", "所在地"],
   "Phone": ["Phone Number", "전화번호", "電話番号"],
   "Email": ["e-mail", "이메일", "Eメール"],
-  "CompanyName": ["Company Name", "업체 이름", "会社の名"],
-  "CompanyLocation": ["Company Location", "업체 장소", "会社の所在地"],
   "SupervisorName": ["Supervisor Company", "슈퍼바이저 업체", "スーパーバイザーの会社"]
 }

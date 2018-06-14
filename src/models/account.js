@@ -20,8 +20,12 @@ const Account = new Schema({
     required: true,
     default: Date.now,
   },
-  name: String,
+  name: {
+    type: String,
+    unique: true,
+  },
   phone: String,
+  location: String,
   email: String,
   type: {
     type: String,
@@ -30,10 +34,6 @@ const Account = new Schema({
   isInitial: {
     type: Boolean,
     default: false,
-  },
-  company: {
-    name: String,
-    location: String,
   },
   rootId: {
     type: Schema.Types.ObjectId,

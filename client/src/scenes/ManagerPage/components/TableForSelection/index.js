@@ -94,7 +94,6 @@ class Component extends React.Component {
     const { classes, translate, handleRowClick, title } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-    console.log('data', data);
     return (
       <div>
         <div className={classes.tableWrapper}>
@@ -118,7 +117,7 @@ class Component extends React.Component {
                     onClick={() => handleRowClick(n.id)}
                   >
                     <TableCell>
-                      <Text>{n.company.name}</Text>
+                      <Text>{n.name}</Text>
                     </TableCell>
                   </TableRow>
                 );

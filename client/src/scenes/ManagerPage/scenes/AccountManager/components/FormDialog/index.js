@@ -18,11 +18,10 @@ const initState = {
   userId: '',
   password: '',
   name: '',
+  location: '',
   phone: '',
   email: '',
   type: 'serviceManager',
-  companyName: '',
-  companyLocation: '',
   rootId: '',
 };
 const styles = theme => ({
@@ -49,9 +48,9 @@ class Component extends React.Component {
           name,
           password,
           phone,
+          location,
           email,
           type,
-          company,
           rootId,
         } = nextProps.selected;
         this.setState({
@@ -60,11 +59,10 @@ class Component extends React.Component {
           userId,
           password,
           name,
+          location,
           phone,
           email,
           type,
-          companyName: company ? company.name:'',
-          companyLocation: company ? company.location: '',
           rootId: rootId ? rootId : '',
         });
       }
@@ -75,31 +73,22 @@ class Component extends React.Component {
   });
   handleSubmit = () => {
     const {
-      companyName,
-      companyLocation,
       rootId,
       type,
       ...rest,
     } = this.state;
     this.props.handleSubmit({
       type,
-      company: type === 'serviceManager' ? null : {
-        name: companyName,
-        location: companyLocation,
-      },
       rootId: type !== 'franchisee' ? null : rootId,
       ...rest,
     });
   };
   isDisabled = () => {
-    const { userId, password, type, companyName, rootId } = this.state;
-    if (userId === '' || password.length < 8) {
+    const { userId, password, type, rootId, name } = this.state;
+    if (userId === '' || password.length < 8 || name === '') {
       return true;
     }
     if (type === 'supervisor' || type === 'franchisee') {
-      if (companyName === '') {
-        return true;
-      }
       if (type === 'franchisee' && rootId === '') {
         return true;
       }
@@ -112,10 +101,9 @@ class Component extends React.Component {
       password,
       name,
       phone,
+      location,
       email,
       type,
-      companyName,
-      companyLocation,
       rootId,
     } = this.state;
     const { classes, loading, translate, rootList, ...props } = this.props;
@@ -170,7 +158,7 @@ class Component extends React.Component {
                         key={o.id}
                         value={o.id}
                       >
-                        {o.company.name}
+                        {o.name}
                       </MenuItem>
                     ))
                   }
@@ -199,6 +187,16 @@ class Component extends React.Component {
             value={name}
             onChange={this.handleChange('name')}
           />
+          {
+            type === 'franchisee' || type === 'supervisor' ?
+              <TextField
+                className={classes.field}
+                label={lang.Location[translate]}
+                fullWidth
+                value={location}
+                onChange={this.handleChange('location')}
+              /> : null
+          }
           <TextField
             className={classes.field}
             label={lang.Phone[translate]}
@@ -214,25 +212,6 @@ class Component extends React.Component {
             value={email}
             onChange={this.handleChange('email')}
           />
-          {
-            type === 'franchisee' || type === 'supervisor' ?
-              <React.Fragment>
-                <TextField
-                  className={classes.field}
-                  label={lang.CompanyName[translate]}
-                  fullWidth
-                  value={companyName}
-                  onChange={this.handleChange('companyName')}
-                />
-                <TextField
-                  className={classes.field}
-                  label={lang.CompanyLocation[translate]}
-                  fullWidth
-                  value={companyLocation}
-                  onChange={this.handleChange('companyLocation')}
-                />
-              </React.Fragment> : null
-          }
         </div>
       </Dialog>
     );

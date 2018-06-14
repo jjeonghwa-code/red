@@ -1,7 +1,7 @@
 import Account from './account';
-import Print from './print';
+import Project from './project';
 
 export {
   Account,
-  Print,
+  Project,
 };

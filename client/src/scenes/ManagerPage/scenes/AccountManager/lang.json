@@ -5,6 +5,5 @@
   "Supervisor": ["Supervisor", "슈퍼바이저", "スーパーバイザ"],
   "Name": ["Name", "이름", "名"],
   "Type": ["Type", "타입", "タイプ"],
-  "CompanyName": ["Company Name", "업체 이름", "会社の名"],
   "SupervisorName": ["Supervisor Company", "슈퍼바이저 업체", "スーパーバイザーの会社"]
 }

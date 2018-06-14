@@ -38,6 +38,7 @@ const styles = theme => ({
   templateItem: {
     display: 'flex',
     flexDirection: 'column',
+    padding: theme.spacing.unit * 2,
   },
   icon: {
     color: theme.palette.primary.contrastText,
@@ -45,6 +46,9 @@ const styles = theme => ({
   title: {
     height: 40,
     background: theme.palette.primary.dark,
+  },
+  img: {
+    width: '100%',
   },
 });
 class Component extends React.Component {
@@ -57,6 +61,9 @@ class Component extends React.Component {
       productSelected: product,
     });
     this.props.handleClick('productClick', product);
+  };
+  handleTemplateClick = (template) => {
+    this.props.handleClick('templateClick', template);
   };
   render () {
     const {
@@ -119,9 +126,10 @@ class Component extends React.Component {
               {
                 templateList.map((template) => (
                   <ListItem
-                    key={template.psCode}
+                    key={template.template_uri}
                     dense
                     button
+                    onClick={() => this.handleTemplateClick(template)}
                     className={classes.templateItem}
                     onMouseEnter={() => this.setState({
                       hoveredTemplate: template,
@@ -130,12 +138,8 @@ class Component extends React.Component {
                       hoveredTemplate: null,
                     })}
                   >
-                    <Text
-                      className={classes.text}
-                    >
-                      {template.categoryName}
-                    </Text>
                     <img
+                      className={classes.img}
                       src={
                         this.state.hoveredTemplate === template &&
                           template.thumbnails.length > 1 ?

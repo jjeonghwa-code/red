@@ -65,7 +65,7 @@ class Scene extends React.Component {
               title={lang.Order[translate]}
               data={completedList.response.map(o => ({
                 ...o,
-                companyName: o.company.name,
+                accountName: o.account.name,
                 thumbnailURL: <img width={200} src={o.thumbnailURL} />,
                 completedDatetime: this.datetimeToString(o.completedDatetime),
               }))}
@@ -73,11 +73,9 @@ class Scene extends React.Component {
               handleMenuClick={this.handleTableMenuClick}
               columnData={[
                 { id: 'thumbnailURL', numeric: false, disablePadding: false, label: lang.Thumbnail[translate] },
-                { id: 'name', numeric: false, disablePadding: false, label: lang.Name[translate]},
                 { id: 'size', numeric: false, disablePadding: false, label: lang.Size[translate]},
                 { id: 'quantity', numeric: false, disablePadding: false, label: lang.Quantity[translate]},
                 { id: 'price', numeric: false, disablePadding: false, label: lang.Price[translate]},
-                { id: 'companyName', numeric: false, disablePadding: false, label: lang.CompanyName[translate]},
                 { id: 'completedDatetime', numeric: false, disablePadding: false, label: lang.Date[translate]},
               ]}
             /> :

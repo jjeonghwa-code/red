@@ -34,6 +34,9 @@ const styles = theme => ({
       backgroundColor: 'white',
     },
   },
+  inputLabel: {
+    color: 'white',
+  },
   hideIcon: {
     visibility: 'hidden',
   },
@@ -74,6 +77,14 @@ class Component extends React.Component {
                     underline: classes.cssUnderline,
                   },
                 }}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.inputLabel,
+                  },
+                  shrink: true,
+                  focused: false,
+                }}
+                label={`[${o.variable.title}]`}
                 value={o.data.text}
                 onChange={e => handleChange(o, e)}
               />

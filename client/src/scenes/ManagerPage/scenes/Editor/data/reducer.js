@@ -1,6 +1,12 @@
 import { combineReducers } from 'redux';
-import d1 from './d1/reducer';
+import save from './save/reducer';
+import productList from './productList/reducer';
+import templateList from './templateList/reducer';
+import get from './get/reducer';
 
 export default combineReducers({
-  d1,
+  save,
+  productList,
+  templateList,
+  get,
 });

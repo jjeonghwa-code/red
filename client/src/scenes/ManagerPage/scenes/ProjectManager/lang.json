@@ -1,0 +1,9 @@
+{
+  "Project": ["Project", "프로젝트", "プロジェクト"],
+  "Name": ["Name", "이름", "名"],
+  "Thumbnail": ["Thumbnail", "썸네일", "サムネイル"],
+  "Size": ["Size", "크기", "サイズ"],
+  "ProductName": ["Product Name", "상품명", "商品名"],
+  "Quantity": ["Quantity", "수량", "数量"],
+  "Price": ["Price", "가격", "価格"]
+}

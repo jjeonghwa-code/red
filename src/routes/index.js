@@ -1,10 +1,10 @@
 import express from 'express';
 import account from './account';
-import print from './print';
+import project from './project';
 
 const router = express.Router();
 
 router.use('/account', account);
-router.use('/print', print);
+router.use('/project', project);
 
 export default router;

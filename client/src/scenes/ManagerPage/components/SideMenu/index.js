@@ -8,7 +8,7 @@ import Text from 'material-ui/Typography';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import SettingIcon from '@material-ui/icons/Settings';
 import ShopIcon from '@material-ui/icons/Home';
-import BasketIcon from '@material-ui/icons/ShoppingBasket';
+import ProjectIcon from '@material-ui/icons/ShoppingBasket';
 import CompletedIcon from '@material-ui/icons/CheckCircle';
 import classNames from 'classnames';
 import lang from './lang';
@@ -72,11 +72,11 @@ class Component extends React.Component {
                 <ListItemText classes={{ primary: classes.listItemContent }} primary={lang.Account[translate]}/>
               </ListItem> : null
           }
-          <ListItem className={classNames(classes.listItem, { [classes.selected]: selected === 'basket' })} button onClick={() => handleClick('basket')}>
+          <ListItem className={classNames(classes.listItem, { [classes.selected]: selected === 'project' })} button onClick={() => handleClick('project')}>
             <ListItemIcon>
-              <BasketIcon className={classes.listItemContent}/>
+              <ProjectIcon className={classes.listItemContent}/>
             </ListItemIcon>
-            <ListItemText classes={{ primary: classes.listItemContent }} primary={lang.Cart[translate]} />
+            <ListItemText classes={{ primary: classes.listItemContent }} primary={lang.Project[translate]} />
           </ListItem>
           <ListItem className={classNames(classes.listItem, { [classes.selected]: selected === 'completed' })} button onClick={() => handleClick('completed')}>
             <ListItemIcon>

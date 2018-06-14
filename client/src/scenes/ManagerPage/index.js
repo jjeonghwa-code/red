@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 import {
   Route,
   Switch,
+  Redirect,
   withRouter,
 } from 'react-router-dom';
 import { auth } from '../../data/auth/actions';
@@ -22,7 +24,7 @@ import SideMenu from './components/SideMenu';
 import Content from './components/Content';
 import ContactDialog from '../../components/ContactDialog';
 import AccountManager from './scenes/AccountManager';
-import EditorManager  from './scenes/EditorManager';
+import ProjectManager  from './scenes/ProjectManager';
 import CompletedManager from './scenes/CompletedManager';
 import ViewDialog from './components/ViewDialog';
 import SecondaryAccountDialog from './components/SecondaryAccountDialog';
@@ -39,19 +41,20 @@ class Scene extends React.Component {
       viewDialogOn: false,
       viewDialogTitle: '',
       viewDialogData: [],
-      selectedSideMenu: this.props.auth.response.type === 'serviceManager' ? 'account':'basket',
       secondaryAccountDialogOn: false,
       editorModeOn: false,
     };
     this.handleFranchiseeLogin();
-    const { type, userId } = this.props.auth.response;
+    const { id } = this.props.auth.response;
     this.props.requestEditor({
-      userId,
+      userId: id,
     });
+    console.log('ManagerPage Constructor');
   }
   handleLogout = () => {
     removeUserTokenFromCookie();
     this.props.authRequest();
+    this.props.push('/');
     if (this.props.franchiseeLogin) {
       this.handleFranchiseeLogout();
     }
@@ -88,10 +91,6 @@ class Scene extends React.Component {
         data: type,
       },
     ];
-    if (company) {
-      data.push({ label: lang.CompanyName[translate], data: company.name });
-      data.push({ label: lang.CompanyLocation[translate], data: company.location });
-    }
     if (root) {
       data.push({ label: lang.SupervisorName[translate], data: root.name });
       data.push({ label: lang.SupervisorLocation[translate], data: root.location });
@@ -131,9 +130,7 @@ class Scene extends React.Component {
     }
   };
   handleSideMenuClick = (name) => {
-    this.setState({
-      selectedSideMenu: name,
-    });
+    this.props.push(name);
   };
   handleFranchiseeLogin = (selectedId = getSecondaryUserTokenFromCookie()) => {
     const { id, type } = this.props.auth.response;
@@ -148,7 +145,7 @@ class Scene extends React.Component {
     }
   };
   render() {
-    const { auth, franchiseeList, franchiseeLogin, editor } = this.props;
+    const { auth, franchiseeList, franchiseeLogin, editor, push } = this.props;
     const {
       contactDialogOn,
       selectedSideMenu,
@@ -156,47 +153,77 @@ class Scene extends React.Component {
       viewDialogTitle,
       viewDialogData,
       secondaryAccountDialogOn,
-      editorModeOn,
     } = this.state;
     return (
       <Layout>
         { editor.loading ? <Loader/> : null }
-        <Header
-          account={auth.response}
-          loading={franchiseeLogin.loading}
-          franchisee={franchiseeLogin.response}
-          handleClick={this.handleHeaderClick}
-          editorModeOn={editorModeOn}
-        />
-        {
-          editorModeOn ?
-            <Editor
-              goBack={() => this.setState({ editorModeOn: false })}
-            />:
-            <React.Fragment>
-              <SideMenu
-                type={auth.response.type}
-                selected={selectedSideMenu}
-                handleClick={this.handleSideMenuClick}
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => <Redirect to={auth.response.type === 'serviceManager' ? '/account':'/project'}/>}
+          />
+          <Route
+            path="/editor/:projectId"
+            render={props => (
+              editor.response ?
+                <Editor
+                  {...props}
+                  franchisee={franchiseeLogin.response}
+                  handleHeaderClick={this.handleHeaderClick}
+                  goBack={() => push('/project')}
+                /> : null
+            )}
+          />
+          <Route
+            path="/editor"
+            render={props => (
+              editor.response ?
+                <Editor
+                  {...props}
+                  franchisee={franchiseeLogin.response}
+                  handleHeaderClick={this.handleHeaderClick}
+                  goBack={() => push('/project')}
+                /> : null
+            )}
+          />
+          <React.Fragment>
+            <Header
+              account={auth.response}
+              loading={franchiseeLogin.loading}
+              franchisee={franchiseeLogin.response}
+              handleClick={this.handleHeaderClick}
+            />
+            <Route
+              path="/:menu"
+              render={({ match }) => (
+                <SideMenu
+                  type={auth.response.type}
+                  selected={match.params.menu}
+                  handleClick={this.handleSideMenuClick}
+                />
+              )}
+            />
+            <Content>
+              <Route
+                path="/account"
+                component={AccountManager}
               />
-              <Content>
-                {
-                  selectedSideMenu === 'account' ?
-                    <AccountManager/> :
-                    selectedSideMenu === 'setting' ?
-                      <Setting/> :
-                      selectedSideMenu === 'basket' ?
-                        <EditorManager
-                          openEditorMode={() => this.setState({
-                            editorModeOn: true,
-                          })}
-                        /> :
-                        selectedSideMenu === 'completed' ?
-                          <CompletedManager/> : null
-                }
-              </Content>
-            </React.Fragment>
-        }
+              <Route
+                path="/setting"
+                component={Setting}
+              />
+              <Route
+                path="/project"
+                component={ProjectManager}
+              />
+              <Route
+                path="/completed"
+                component={CompletedManager}
+              />
+            </Content>
+          </React.Fragment>
+        </Switch>
         <ContactDialog
           open={contactDialogOn}
           onClose={() => this.setState({
@@ -232,6 +259,7 @@ const mapStateToProps = state => ({
   editor: state.ManagerPage.data.editor,
 });
 const mapDispatchToProps = dispatch => bindActionCreators({
+  push,
   authRequest: auth.request,
   requestFranchiseeList: franchiseeList.request,
   requestFranchiseeLogin: franchiseeLogin.request,

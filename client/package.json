@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "dependencies": {
+    "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.0.0-beta.43",
     "classnames": "^2.2.5",
     "history": "^4.7.2",

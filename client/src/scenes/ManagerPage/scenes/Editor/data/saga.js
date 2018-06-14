@@ -1,5 +1,11 @@
-import d1 from './d1/saga';
+import save from './save/saga';
+import productList from './productList/saga';
+import templateList from './templateList/saga';
+import get from './get/saga';
 
 export default [
-  ...d1,
+  ...save,
+  ...productList,
+  ...templateList,
+  ...get,
 ];

@@ -77,8 +77,7 @@ class Scene extends React.Component {
               title={lang.Account[translate]}
               data={accountList.response.map(o => ({
                 ...o,
-                companyName: o.company ? o.company.name : '',
-                supervisorName: o.root && o.root.company ? o.root.company.name : '',
+                supervisorName: o.root ? o.root.name : '',
               }))}
               handleRowClick={this.handleTableRowClick}
               handleMenuClick={this.handleTableMenuClick}
@@ -86,7 +85,6 @@ class Scene extends React.Component {
                 { id: 'userId', numeric: false, disablePadding: false, label: 'ID' },
                 { id: 'name', numeric: false, disablePadding: false, label: lang.Name[translate]},
                 { id: 'type', numeric: false, disablePadding: false, label: lang.Type[translate]},
-                { id: 'companyName', numeric: false, disablePadding: false, label: lang.CompanyName[translate]},
                 { id: 'supervisorName', numeric: false, disablePadding: false, label: lang.SupervisorName[translate]},
               ]}
             /> :
@@ -102,9 +100,7 @@ class Scene extends React.Component {
           selected={selectedRow}
           handleSubmit={this.handleFormSubmit}
           rootList={accountList.response ?
-            accountList.response.filter(o => o.type === 'supervisor')
-              .map(o => ({ id: o.id, company: o.company }))
-            : []
+            accountList.response.filter(o => o.type === 'supervisor') : []
           }
         />
       </React.Fragment>

@@ -97,10 +97,13 @@ const styles = theme => ({
   },
 });
 class Component extends React.Component {
-  state = {
-    hovered: null,
-    menu: 'text',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hovered: null,
+      menu: this.props.isOpened ? 'text':'productsAndTemplates',
+    };
+  }
   handleMenuChange = name => () => this.setState({
     menu: name,
   });
@@ -113,7 +116,8 @@ class Component extends React.Component {
       handleChange,
       handleClick,
       forms,
-      productsAndTemplates
+      productsAndTemplates,
+      batchDisabled,
     } = this.props;
     const {
       menu,
@@ -179,7 +183,7 @@ class Component extends React.Component {
             {
               menu === 'text' ?
                 <TextForm
-                  forms={forms.filter(o => !!o.data)}
+                  forms={forms}
                   handleClick={handleClick}
                   handleChange={handleChange}
                 /> :
@@ -196,6 +200,7 @@ class Component extends React.Component {
               menu === 'batch' ?
                 <BatchForm
                   handleClick={handleClick}
+                  disabled={batchDisabled}
                 /> : null
             }
           </List>
