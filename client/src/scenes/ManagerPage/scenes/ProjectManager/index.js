@@ -14,7 +14,7 @@ import lang from './lang';
 import FormDialog from './components/FormDialog';
 import { update } from './data/update/actions';
 import makeExcel from './modules/makeExcel';
-import UploadDialog from './components/UploadDialog2';
+import UploadDialog from './components/UploadDialog';
 
 const initialState = {
   formDialogOn: false,
