@@ -59,7 +59,7 @@ function* post({ params }) {
       }
     );
     if (response) {
-      yield put(push('/basket'));
+      yield put(push('/project'));
       yield put(save.success(params, response));
     } else {
       yield put(save.failure(params, 'SAVE ERROR'));

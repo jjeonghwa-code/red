@@ -14,7 +14,7 @@ import lang from './lang';
 import FormDialog from './components/FormDialog';
 import { update } from './data/update/actions';
 import makeExcel from './modules/makeExcel';
-import UploadDialog from './components/UploadDialog';
+import UploadDialog from './components/UploadDialog2';
 
 const initialState = {
   formDialogOn: false,
@@ -65,6 +65,7 @@ class Scene extends React.Component {
         // const { editor } = this.props.editor.response;
         // makeExcel(this.state.changeables, editor.getProjectId());
         // break;
+        break;
       case 'upload':
         this.setState({
           uploadDialogOn: true,
