@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
-import Text from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Text from '@material-ui/core/Typography';
 import IconAccount from '@material-ui/icons/AccountCircle';
 import IconHelp from '@material-ui/icons/HelpOutline';
 import IconFranchisee from '@material-ui/icons/Home';
-import classNames from 'classnames';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Loader from '../../../../components/Loader';
 import lang from './lang';
 

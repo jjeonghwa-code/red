@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import Text from 'material-ui/Typography';
-import lang from './lang';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   root: {

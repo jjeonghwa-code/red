@@ -7,7 +7,6 @@ import {
   withRouter,
 } from 'react-router-dom';
 import update from 'react-addons-update';
-import Button from 'material-ui/Button';
 import Layout from './components/Layout';
 import EditorSideMenu from './components/EditorSideMenu';
 import makeExcel from './modules/makeExcel';
@@ -47,7 +46,6 @@ class Scene extends React.Component {
       project: null,
       loading: false,
     };
-    console.log('Editor Constructor');
   }
   componentWillReceiveProps(nextProps) {
     const { editor } = this.props.editor.response;
@@ -57,13 +55,8 @@ class Scene extends React.Component {
     if (get.response && !this.state.project && this.props.match.params.projectId) {
       const {
         projectId,
-        psCode,
-        templateUrl,
-        thumbnails,
-        sizeName,
-        productName,
-        price,
         id,
+        thumbnails,
       } = get.response;
       if (projectId) {
         editor.openProject({
@@ -73,14 +66,9 @@ class Scene extends React.Component {
         });
         this.setState({
           project: {
-            psCode,
             projectId,
-            templateUrl,
-            thumbnails,
-            sizeName,
-            productName,
-            price,
             id,
+            thumbnails,
           },
         });
       }
@@ -163,34 +151,36 @@ class Scene extends React.Component {
       sizeName,
       productName,
       defaultPrice,
+      token,
     } = template;
     if (this.state.project) {
       editor.changeTemplate(psCode, template_uri);
       this.setState((state) => {
         const project = JSON.parse(JSON.stringify(state.project));
         project.psCode = psCode;
-        project.templateUrl = template_uri;
+        project.templateToken = token;
         project.sizeName = sizeName;
         project.productName = productName;
         project.price = defaultPrice;
+        project.thumbnails = thumbnails;
         return { project }
       });
     } else {
       editor.createProject({
         selector: "#editor",
         psCode,
-        templateUrl: template_uri,
         title: "TITLE",
         hideToolbar: true,
+        templateUrl: template_uri,
       });
       this.setState({
         project: {
           psCode,
-          templateUrl: template_uri,
           thumbnails,
           sizeName,
           productName,
           price: defaultPrice,
+          templateToken: token,
         },
       });
     }
@@ -251,9 +241,7 @@ class Scene extends React.Component {
 
     const { editor } = this.props.editor.response;
     const { path, data, variable } = changeable;
-    // 이하 폼 이벤트 수신 부분
 
-    //*
     editor.remoteEditor('var-changed', {
       feature: 'var:text',
       data,
@@ -294,15 +282,6 @@ class Scene extends React.Component {
       addTextNum: num,
     });
     editor.remoteEditor('add-text', newText);
-  };
-  handlePrepareOrder = () => {
-    const { editor } = this.props.editor.response;
-    editor.prepareOrder(editor.getProjectId(), {
-      order_count: 10,
-      total_price: 20,
-      orderId: "2018181818_2",
-      name: "test_kiyeop",
-    }, console.log)
   };
   handleHeaderClick = (name) => {
     const { handleHeaderClick, requestSave, auth }  = this.props;

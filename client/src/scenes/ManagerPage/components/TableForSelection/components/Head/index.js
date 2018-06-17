@@ -1,13 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  TableCell,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-} from 'material-ui/Table';
-import Checkbox from 'material-ui/Checkbox';
-import Tooltip from 'material-ui/Tooltip';
+import TableHead from '@material-ui/core/TableHead';
+import TableCell from '@material-ui/core/TableCell';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
 import lang from './lang';
 
 class Component extends React.Component {

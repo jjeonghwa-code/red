@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import Table, {
-  TableBody,
-  TableCell,
-  TablePagination,
-  TableRow,
-} from 'material-ui/Table';
-import Checkbox from 'material-ui/Checkbox';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import Checkbox from '@material-ui/core/Checkbox';
 import Head from './components/Head';
 import Toolbar from './components/Toolbar';
 import PaperLayout from '../../components/PaperLayout';
@@ -19,6 +18,20 @@ const styles = {
   },
   tableWrapper: {
     overflowX: 'auto',
+  },
+  imgWrapper: {
+    margin: 'auto',
+    width: 270,
+    height: 270,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  img: {
+    height: 'auto',
+    maxHeight: '100%',
+    width: 'auto',
+    maxWidth: '100%',
   },
 };
 class Component extends React.Component {
@@ -150,16 +163,18 @@ class Component extends React.Component {
                         >
                           {
                             o.thumbnails ?
-                              <img
-                                width={150}
-                                src={hoveredItemId === n.id ? n.thumbnails[1] : n.thumbnails[0]}
-                                onMouseEnter={() => this.setState({
-                                  hoveredItemId: n.id,
-                                })}
-                                onMouseLeave={() => this.setState({
-                                  hoveredItemId: null,
-                                })}
-                              /> : n[o.id]
+                              <div className={classes.imgWrapper}>
+                                <img
+                                  className={classes.img}
+                                  src={hoveredItemId === n.id ? n.thumbnails[1] : n.thumbnails[0]}
+                                  onMouseEnter={() => this.setState({
+                                    hoveredItemId: n.id,
+                                  })}
+                                  onMouseLeave={() => this.setState({
+                                    hoveredItemId: null,
+                                  })}
+                                />
+                              </div>: o.variantValue && n[o.variantValue] ? n[o.variantValue]: n[o.id]
                           }
                         </TableCell>
                       ))

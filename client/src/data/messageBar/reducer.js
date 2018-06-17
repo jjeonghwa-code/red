@@ -35,6 +35,15 @@ export default (state = initialState, action) => {
       return update(state, {
         status: { $set: 'CLOSED' },
       });
+    case ACTIONS.SHOW_MESSAGE:
+      return update(state, {
+        queue: {
+          $push: [{
+            message: action.message,
+            key: new Date().getTime(),
+          }],
+        },
+      });
     default:
       return state;
   }

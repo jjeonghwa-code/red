@@ -18,7 +18,6 @@ import UploadDialog from './components/UploadDialog';
 
 const initialState = {
   formDialogOn: false,
-  uploadDialogOn: false,
   selectedRow: null,
 };
 class Scene extends React.Component {
@@ -56,7 +55,6 @@ class Scene extends React.Component {
     }
   };
   handleFormSubmit = (input) => {
-    console.log(input);
     this.props.requestUpdate(input);
   };
   handleFormMenuClick = (name, input) => {
@@ -65,11 +63,6 @@ class Scene extends React.Component {
         // const { editor } = this.props.editor.response;
         // makeExcel(this.state.changeables, editor.getProjectId());
         // break;
-        break;
-      case 'upload':
-        this.setState({
-          uploadDialogOn: true,
-        });
         break;
       case 'editor':
         this.props.push(`/editor/${input}`);
@@ -80,8 +73,8 @@ class Scene extends React.Component {
     }
   };
   render() {
-    const { formDialogOn, uploadDialogOn, selectedRow } = this.state;
-    const { translate, projectList, remove, update } = this.props;
+    const { formDialogOn, selectedRow } = this.state;
+    const { translate, projectList, remove, update, editor } = this.props;
     return (
       <React.Fragment>
         {
@@ -90,20 +83,25 @@ class Scene extends React.Component {
           projectList.response ?
             <Table
               title={lang.Project[translate]}
-              data={projectList.response}
+              data={projectList.response.map(o => ({
+                ...o,
+                quantityForVariableData: o.variableData ?
+                  `${o.variableData.views.length}(가변) * ${o.quantity}` : undefined,
+                sumOfPrice: o.variableData ? o.quantity * o.price * o.variableData.views.length : o.quantity * o.price,
+              }))}
               handleRowClick={this.handleTableRowClick}
               handleMenuClick={this.handleTableMenuClick}
               columnData={[
                 { id: 'thumbnails', thumbnails: true, numeric: false, disablePadding: false, label: lang.Thumbnail[translate] },
                 { id: 'productName', numeric: false, disablePadding: false, label: lang.ProductName[translate] },
                 { id: 'sizeName', numeric: false, disablePadding: false, label: lang.Size[translate]},
-                { id: 'quantity', numeric: false, disablePadding: false, label: lang.Quantity[translate]},
-                { id: 'price', numeric: false, disablePadding: false, label: lang.Price[translate]},
+                { id: 'quantity', variantValue: 'quantityForVariableData',numeric: false, disablePadding: false, label: lang.Quantity[translate]},
+                { id: 'sumOfPrice', numeric: false, disablePadding: false, label: lang.Price[translate]},
               ]}
             /> : <Error/>
         }
         <FormDialog
-          title={"프로젝트 상세"}
+          title={"프로젝트 주문서"}
           loading={update.loading}
           open={formDialogOn}
           onClose={() => this.setState({
@@ -112,13 +110,7 @@ class Scene extends React.Component {
           selected={selectedRow}
           handleSubmit={this.handleFormSubmit}
           handleMenuClick={this.handleFormMenuClick}
-        />
-        <UploadDialog
-          title={"배치 주문"}
-          open={uploadDialogOn}
-          onClose={() => this.setState({
-            uploadDialogOn: false,
-          })}
+          editor={editor.response ? editor.response.editor : null}
         />
       </React.Fragment>
     );

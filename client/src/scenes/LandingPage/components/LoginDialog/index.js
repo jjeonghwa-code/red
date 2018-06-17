@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import Text from 'material-ui/Typography';
-import TextField from 'material-ui/TextField';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import lang from './lang';
 import Dialog from '../../../../components/Dialog';
 import Loader from '../../../../components/Loader';

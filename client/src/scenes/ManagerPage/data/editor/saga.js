@@ -31,6 +31,7 @@ function* get({ params }) {
       accessToken: token,
       sandboxMode: true,
     });
+    window._editor = Editor;
     yield put(editor.success(params, {
       editor: Editor,
       token,

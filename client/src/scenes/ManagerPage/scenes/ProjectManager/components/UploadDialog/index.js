@@ -2,12 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 import update from 'react-addons-update';
-import { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl } from 'material-ui/Form';
-import Select from 'material-ui/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import UploadIcon from '@material-ui/icons/Save';
 import DownloadIcon from '@material-ui/icons/GetApp';
@@ -184,7 +184,7 @@ class Component extends React.Component {
   };
   handleSubmit = () => {
     const { ...rest } = this.state;
-    this.props.handleSubmit(rest);
+    // this.props.handleSubmit(rest);
   };
   isDisabled = () => {
     return 0;
@@ -210,11 +210,11 @@ class Component extends React.Component {
       price,
       viewNow,
     } = this.state;
-    const { classes, loading, translate, onClose, handleMenuClick, ...props } = this.props;
+    const { classes, loading, translate, handleMenuClick, ...props } = this.props;
     return (
       <Dialog
         title={"title"}
-        onSubmit={onClose}
+        onSubmit={this.handleSubmit}
         disabled={this.isDisabled()}
         {...props}
       >
@@ -229,17 +229,6 @@ class Component extends React.Component {
                 width={150}
                 src={views[viewNow].thumbnails[0]}
               />
-              <Text align="center">앞면</Text>
-            </div>
-            <div
-              className={classes.img}
-            >
-              <img
-                className={classes.img}
-                width={150}
-                src={views[viewNow].thumbnails[1]}
-              />
-              <Text align="center">뒷면</Text>
             </div>
           </div>
           <div className={classes.center}>

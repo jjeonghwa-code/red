@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import Drawer from 'material-ui/Drawer';
-import Text from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Text from '@material-ui/core/Typography';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import SettingIcon from '@material-ui/icons/Settings';
 import ShopIcon from '@material-ui/icons/Home';

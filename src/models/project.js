@@ -6,9 +6,8 @@ const Project = new Schema({
   accountId: Schema.Types.ObjectId,
   sizeName: String,
   productName: String,
-  projectId: String,
   psCode:String,
-  templateUrl: String,
+  templateToken: String,
   datetime: {
     type: Number,
     default: Date.now,
@@ -21,10 +20,22 @@ const Project = new Schema({
     type: Number,
     default: 1000,
   },
-  isCompleted: {
-    type: Boolean,
-    default: false,
-  },
+  variableData: Object,
+  order_status: {
+    type: Number,
+    default: 0,
+  }, // 0: not_ordered, 1: tentative, 2: definitive
+
+  userId: String,
+  projectId: String,
+  token: String, //templateToken
+  orderInfo: {
+    order_count: Number,
+    total_price: Number,
+    partner_order_id: String,
+    order_name: String,
+    vdp_dataset: Object,
+  }
 });
 
 export default mongoose.model('project', Project);

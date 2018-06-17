@@ -52,8 +52,7 @@ router.put(
     }
   },
 );
-
-// 인증
+//
 router.post(
   '/list',
   async (req, res) => {
@@ -62,7 +61,7 @@ router.post(
       const { accountId } = req.body;
       const projects = await Project.find({
         accountId: mongoose.Types.ObjectId(accountId),
-        isCompleted: false,
+        order_status: 0,
       });
       res.json(fromMongo(projects.map(o => o.toObject())));
     } catch (error) {
@@ -142,7 +141,6 @@ router.post(
     } : o)));
   },
 );
-
 // appList 업데이트
 router.put(
   '/applist',

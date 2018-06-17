@@ -5,6 +5,7 @@ import {
 const PROCESS = 'PROCESS';
 const CLOSING = 'CLOSING';
 const CLOSED = 'CLOSED';
+const SHOW_MESSAGE = 'SHOW_MESSAGE';
 const ACTIONS = createActionTypes('data/messageBar', [PROCESS, CLOSING, CLOSED]);
 
 const closed = () => ({
@@ -18,9 +19,14 @@ const process = ({ info, queue }) => ({
   info,
   queue,
 });
+const showMessage = ({ message }) => ({
+  type: ACTIONS[SHOW_MESSAGE],
+  message,
+});
 export {
   ACTIONS,
   closed,
   closing,
   process,
+  showMessage,
 };

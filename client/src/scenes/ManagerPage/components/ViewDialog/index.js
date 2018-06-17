@@ -1,13 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import TextField from 'material-ui/TextField';
-import Text from 'material-ui/Typography';
-import update from 'react-addons-update';
-import { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl } from 'material-ui/Form';
-import Select from 'material-ui/Select';
+import { withStyles } from '@material-ui/core/styles';
+import Text from '@material-ui/core/Typography';
 import lang from './lang';
 import Dialog from '../../../../components/Dialog';
 

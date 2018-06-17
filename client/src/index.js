@@ -4,7 +4,7 @@ import Promise from 'promise-polyfill';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import store, { history } from './store';
 import './index.css';
 import App from './App';

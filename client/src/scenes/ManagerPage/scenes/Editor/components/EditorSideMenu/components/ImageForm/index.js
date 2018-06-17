@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import { withStyles } from '@material-ui/core/styles';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import ClearIcon from '@material-ui/icons/Clear';
 import classNames from 'classnames';
-import TextField from 'material-ui/TextField';
-import IconButton from 'material-ui/IconButton';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Add';
 import lang from './lang';
 

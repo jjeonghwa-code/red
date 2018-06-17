@@ -1,7 +1,7 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const styles = {
   root: {
     flexGrow: 1,
     minWidth: 1000,
@@ -11,7 +11,7 @@ const styles = theme => ({
     position: 'relative',
     display: 'flex',
   },
-});
+};
 class Component extends React.Component {
   render () {
     const { classes, children } = this.props;

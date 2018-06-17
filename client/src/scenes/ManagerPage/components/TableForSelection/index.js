@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import Table, {
-  TableBody,
-  TableCell,
-  TablePagination,
-  TableRow,
-} from 'material-ui/Table';
-import Checkbox from 'material-ui/Checkbox';
-import Text from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import Text from '@material-ui/core/Typography';
 import Head from './components/Head';
 import lang from './lang';
 

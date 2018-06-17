@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Add';
-import { lighten } from 'material-ui/styles/colorManipulator';
-import Toolbar from 'material-ui/Toolbar';
-import Text from 'material-ui/Typography';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
+import Toolbar from '@material-ui/core/Toolbar';
+import Text from '@material-ui/core/Typography';
 import lang from './lang';
 
 const styles = theme => ({
