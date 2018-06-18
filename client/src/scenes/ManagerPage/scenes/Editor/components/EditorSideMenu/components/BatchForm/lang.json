@@ -1,4 +1,4 @@
 {
-  "Account": ["Account", "계정", "アカウント"],
-  "Setting": ["Setting", "설정", "設定"]
+  "DownloadForm": ["Download Form", "폼 다운로드", "フォームのダウンロード"],
+  "LabelOfDownloadForm": ["save is required", "저장이 되어야 합니다.", "セーブが必要です"]
 }

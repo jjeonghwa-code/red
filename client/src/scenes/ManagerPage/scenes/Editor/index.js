@@ -10,6 +10,7 @@ import update from 'react-addons-update';
 import Layout from './components/Layout';
 import EditorSideMenu from './components/EditorSideMenu';
 import makeExcel from './modules/makeExcel';
+import lang from './lang';
 import Loader from '../../../../components/Loader';
 import Header from '../../components/Header';
 import {
@@ -73,23 +74,6 @@ class Scene extends React.Component {
         });
       }
     }
-    // for development
-    if (!this.props.match.params.projectId) {
-      const { productList, templateList } = nextProps;
-      if (!this.props.productList.response && productList.response) {
-        this.props.requestTemplateList({
-          editor,
-          code: "TPBCDFT",
-          option: {
-            limit: 9999,
-          },
-        });
-      }
-      if (!this.props.templateList.response && templateList.response) {
-        this.createProject(templateList.response.list.find(o => o.template_uri === 'gcs://template/partners/redp/res/template/11173.json'));
-      }
-    }
-    //
   }
   componentDidMount() {
     const { editor } = this.props.editor.response;
@@ -142,6 +126,19 @@ class Scene extends React.Component {
       requestGet({ projectId });
     }
   };
+  initEditorForDev = () => {
+    this.createProject({
+      template_uri: 'gcs://template/partners/redp/res/template/11173.json',
+      psCode: '54x94@TPBCDFT',
+      thumbnails: [
+        "https://d2vgy67dgpwzce.cloudfront.net/Edicus/thumbnails/TP/TPBCDFT/2fb96ef1-376d-450d-b3ca-634e4ae18a80.png",
+        "https://d2vgy67dgpwzce.cloudfront.net/Edicus/thumbnails/TP/TPBCDFT/4952b371-5e20-427b-b061-c9fda5a62483.png"],
+      sizeName: '50x90',
+      productName: '디자인명함',
+      defaultPrice: 6900,
+      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVyX2NvZGUiOiJyZWRwIiwicmVzb3VyY2VfaWQiOjExMTczLCJpYXQiOjE1MjE1NDEwNDZ9.KIiY8qkMY38FADM_etzsBJTWNvWeihYJgS8GwCsgKdk",
+    });
+  };
   createProject = (template) => {
     const { editor } = this.props.editor.response;
     const {
@@ -191,6 +188,9 @@ class Scene extends React.Component {
       editor = this.props.editor.response.editor;
     }
     switch(name) {
+      case 'dev':
+        this.initEditorForDev();
+        break;
       case 'goBack':
         this.props.goBack();
         break;
@@ -273,7 +273,7 @@ class Scene extends React.Component {
         title: `Text#${num}`,
       },
       data: {
-        text: '내용을 입력',
+        text: lang.Text[this.props.translate],
         font_size: 10,
         align: 'left',
       },
@@ -316,14 +316,6 @@ class Scene extends React.Component {
       events,
       project,
     } = this.state;
-    console.log('changeables', changeables);
-    console.log('events', events);
-    console.log(this.state);
-    console.log(this.props);
-    console.log(editor.getProjectId());
-    // {/*<Button onClick={this.handleSave}>save</Button>*/}
-    // {/*<Button onClick={this.handleGetThumbnail}>getThumbnail</Button>*/}
-    // {/*<Button onClick={this.handlePrepareOrder}>prepareOrder</Button>*/}
     return (
       <React.Fragment>
         { get.loading || save.loading ? <Loader isGlobal/> : null }
@@ -344,6 +336,7 @@ class Scene extends React.Component {
             templateList: templateList.response ?
               templateList.response.list : [],
           }}
+          batchNotAllowed={auth.response.type === 'franchisee' }
           batchDisabled={!match.params.projectId}
         />
         <Layout id="editor" />
@@ -354,6 +347,7 @@ class Scene extends React.Component {
 }
 const mapStateToProps = state => ({
   auth: state.data.auth,
+  translate: state.data.language.selected,
   editor: state.ManagerPage.data.editor,
   save: state.ManagerPage.Editor.data.save,
   productList: state.ManagerPage.Editor.data.productList,

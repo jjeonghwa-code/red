@@ -1,4 +1,6 @@
 {
 	"DATA_BACKEND": "mongodb",
-	"MONGO_URL": "mongodb://localhost:27017/red"
+	"MONGO_URL": "mongodb://localhost:27017/red",
+	"RED_API_URL": "http://dev.makers.redprinting.net",
+	"RED_API_TOKEN": "5byEBhLaqD4t6KjqYDzv"
 }

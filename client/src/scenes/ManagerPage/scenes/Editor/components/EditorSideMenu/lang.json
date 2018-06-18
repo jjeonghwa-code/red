@@ -1,4 +1,6 @@
 {
-  "Account": ["Account", "계정", "アカウント"],
-  "Setting": ["Setting", "설정", "設定"]
+  "Template": ["Template", "템플릿", "テンプレート"],
+  "Text": ["Text", "텍스트", "テキスト"],
+  "Image": ["Image", "이미지", "画像"],
+  "Batch": ["Batch", "배치", "バッチ"]
 }

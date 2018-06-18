@@ -15,110 +15,40 @@ import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import RightIcon from '@material-ui/icons/KeyboardArrowRight';
 import IconButton from '@material-ui/core/IconButton';
 import Text from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ConfirmedIcon from '@material-ui/icons/Done';
+import NotConfirmedIcon from '@material-ui/icons/Clear';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 import lang from './lang';
-import Dialog from '../../../../../../components/Dialog';
 import Loader from '../../../../../../components/Loader';
 
 const initState = {
-  mode: 'update',
-  views: [
-    {
-      id: 0,
-      thumbnails: [
-        "https://firebasestorage.googleapis.com/v0/b/edicusbase.appspot.com/o/partners%2Fredp%2Fusers%2Fredp-5aef19b316bee33430dfb446%2Fprojects%2F-LEleWIG6WCS5kUyb0RJ%2Fpreivew%2Fpreview_0.jpg?alt=media&token=78e79a1f-9abc-482b-89c5-3d0e16cca1c3",
-        "https://firebasestorage.googleapis.com/v0/b/edicusbase.appspot.com/o/partners%2Fredp%2Fusers%2Fredp-5aef19b316bee33430dfb446%2Fprojects%2F-LEleWIG6WCS5kUyb0RJ%2Fpreivew%2Fpreview_1.jpg?alt=media&token=8193a87b-0c8d-4028-8166-a7105e4de20b",
-      ],
-      inputs: [
-        {
-          page: 0,
-          label: '제목',
-          value: '테스트 제목 1',
-        },
-        {
-          page: 0,
-          label: '앞면 전화번호',
-          value: '테스트 전화번호 1',
-        },
-        {
-          page: 1,
-          label: '뒷면 전화번호',
-          value: '테스트 전화번호 1',
-        },
-        {
-          page: 1,
-          label: '뒷면 설명',
-          value: '테스트 설명 1',
-        },
-      ],
-    },
-    {
-      id: 1,
-      thumbnails: [
-        "https://firebasestorage.googleapis.com/v0/b/edicusbase.appspot.com/o/partners%2Fredp%2Fusers%2Fredp-5aef19b316bee33430dfb446%2Fprojects%2F-LEleWIG6WCS5kUyb0RJ%2Fpreivew%2Fpreview_0.jpg?alt=media&token=78e79a1f-9abc-482b-89c5-3d0e16cca1c3",
-        "https://firebasestorage.googleapis.com/v0/b/edicusbase.appspot.com/o/partners%2Fredp%2Fusers%2Fredp-5aef19b316bee33430dfb446%2Fprojects%2F-LEleWIG6WCS5kUyb0RJ%2Fpreivew%2Fpreview_1.jpg?alt=media&token=8193a87b-0c8d-4028-8166-a7105e4de20b",
-      ],
-      inputs: [
-        {
-          page: 0,
-          label: '제목',
-          value: '테스트 제목 2',
-        },
-        {
-          page: 0,
-          label: '앞면 전화번호',
-          value: '테스트 전화번호 2',
-        },
-        {
-          page: 1,
-          label: '뒷면 전화번호',
-          value: '테스트 전화번호 2',
-        },
-        {
-          page: 1,
-          label: '뒷면 설명',
-          value: '테스트 설명 2',
-        },
-      ],
-    },
-    {
-      id: 2,
-      thumbnails: [
-        "https://firebasestorage.googleapis.com/v0/b/edicusbase.appspot.com/o/partners%2Fredp%2Fusers%2Fredp-5aef19b316bee33430dfb446%2Fprojects%2F-LEleWIG6WCS5kUyb0RJ%2Fpreivew%2Fpreview_0.jpg?alt=media&token=78e79a1f-9abc-482b-89c5-3d0e16cca1c3",
-        "https://firebasestorage.googleapis.com/v0/b/edicusbase.appspot.com/o/partners%2Fredp%2Fusers%2Fredp-5aef19b316bee33430dfb446%2Fprojects%2F-LEleWIG6WCS5kUyb0RJ%2Fpreivew%2Fpreview_1.jpg?alt=media&token=8193a87b-0c8d-4028-8166-a7105e4de20b",
-      ],
-      inputs: [
-        {
-          page: 0,
-          label: '제목',
-          value: '테스트 제목 3',
-        },
-        {
-          page: 0,
-          label: '앞면 전화번호',
-          value: '테스트 전화번호 3',
-        },
-        {
-          page: 1,
-          label: '뒷면 전화번호',
-          value: '테스트 전화번호 3',
-        },
-        {
-          page: 1,
-          label: '뒷면 설명',
-          value: '테스트 설명 3',
-        },
-      ],
-    },
-  ],
-  productName: '디자인 명함',
-  sizeName: '50x90',
-  quantityForEach: 1,
-  price: 1000,
-  viewNow: 0,
+  mode: 'create',
+  views: [],
+  viewNow: -1,
 };
 const styles = theme => ({
+  dialog: {
+    background: '#f0f0f0',
+  },
   layout: {
-    padding: theme.spacing.unit * 3,
+    display: 'flex',
+    alignItems: 'stretch',
+    height: '100%',
+    background: '#f0f0f0',
+  },
+  title: {
+    background: theme.palette.primary.main,
+    padding: theme.spacing.unit * 2,
+  },
+  titleText: {
+    color: theme.palette.primary.contrastText,
+    fontSize: 20,
   },
   field: {
     marginBottom: theme.spacing.unit,
@@ -137,44 +67,89 @@ const styles = theme => ({
   buttonIcon: {
     marginRight: theme.spacing.unit,//
   },
-  input: {
-    display: 'none',
-  },
   center: {
     textAlign: 'center',
   },
   img: {
     margin: theme.spacing.unit * 2,
   },
+  list: {
+    width: 375,
+    paddingTop: 0,
+    paddingBottom: 0,
+    maxHeight: '100%',
+    overflow: 'auto',
+  },
+  inputs: {
+    width: 200,
+    padding: theme.spacing.unit,
+    maxHeight: '100%',
+    overflow: 'auto',
+  },
+  viewer: {
+    width: '100%',
+    padding: theme.spacing.unit * 3,
+    height: 'auto',
+    minHeight: 500,
+  },
+  icon: {
+    marginRight: 0,
+  },
+  actions: {
+    background: '#f0f0f0',
+    padding: '8px 4px',
+    margin: 0,
+  },
+  selected: {
+    background: 'gainsboro',
+  },
+  listItemText: {
+    padding: 0,
+  },
 });
 class Component extends React.Component {
   state = initState;
-  // componentWillReceiveProps(nextProps) {
-  //   if (!nextProps.selected) {
-  //     this.setState(initState);
-  //   } else {
-  //     const prevRow = JSON.stringify(this.props.selected);
-  //     const nextRow = JSON.stringify(nextProps.selected);
-  //     if (prevRow !== nextRow) {
-  //       const {
-  //         id,
-  //         thumbnails,
-  //         productName,
-  //         sizeName,
-  //         quantity,
-  //         price,
-  //       } = nextProps.selected;
-  //       this.setState({
-  //         id,
-  //         thumbnails,
-  //         productName,
-  //         sizeName,
-  //         quantity,
-  //         price,
-  //       });
-  //     }
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.data) {
+      this.setState(initState);
+    } else {
+      const {
+        id,
+        views,
+      } = nextProps.data;
+      this.setState({
+        id,
+        views: views.map(o => ({ ...o, isConfirmed: false })),
+        viewNow: -1,
+      });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.open && this.props.open) {
+      setTimeout(() => {
+        this.props.editor.openVdpViewer({
+          projectId: this.props.data.projectId,
+          selector: '#viewer',
+        }, (e, data) => {
+          console.log('viewer', String(data));
+        });
+        this.setState({ viewerOn: true });
+      }, 700);
+    } else if (prevProps.open && !this.props.open) {
+      const viewer = document.getElementById('viewer');
+      while(viewer.firstChild) {
+        viewer.removeChild(viewer.firstChild);
+      }
+    }
+    if (prevProps.open && this.props.open && this.state.viewNow > -1 &&(
+      (prevState.viewNow !== this.state.viewNow)|| (
+        prevState.views[this.state.viewNow] !== this.state.views[this.state.viewNow]
+      ))) {
+      this.props.editor.setVariableData({
+        cols: this.state.views[this.state.viewNow].data,
+      });
+    }
+  }
   handleChange = name => e => {
     if (e.target.value > 0) {
       this.setState({
@@ -187,19 +162,71 @@ class Component extends React.Component {
     // this.props.handleSubmit(rest);
   };
   isDisabled = () => {
-    return 0;
+    return false;
   };
-  changeViews = name => {
-    const { views, viewNow } = this.state;
-    if (name === 'left' && viewNow + 1 > 1) {
-      this.setState({
-        viewNow: viewNow - 1,
+  changeViews = selected => {
+    this.setState({
+      viewNow: selected,
+    });
+  };
+  handleViewerDataChange = title => e => {
+    const { value } = e.target;
+    this.setState(prev => {
+      const { views, viewNow } = prev;
+      const prevData = views[viewNow].data;
+      const prevViewI = prevData.findIndex(o => o.title === title);
+      const updatedView = update(prevData[prevViewI], { value: { $set: value } });
+
+      const updatedViews = update(views, {
+        [viewNow]: {
+          data: {
+            $splice: [[prevViewI, 1, updatedView]],
+          },
+        },
       });
-    } else if (name === 'right' && viewNow + 1 < views.length){
+      // this.props.editor.setVariableData({
+      //   cols: updatedViews[viewNow].data,
+      // });
+
+      return {
+        views: updatedViews,
+      };
+    });
+  };
+  handleConfirm = i => {
+    const { views, viewNow } = this.state;
+    if (i === -2) {
       this.setState({
-        viewNow: viewNow + 1,
+        views: views.map(o => ({
+          ...o,
+          isConfirmed: false,
+        })),
+      });
+    } else if (i === -1) {
+      this.setState({
+        views: views.map(o => ({
+          ...o,
+          isConfirmed: true,
+        })),
+      });
+    } else {
+      const newViews = views.map((o, ii) => ({
+        ...o,
+        isConfirmed: i === ii ?
+          !o.isConfirmed : o.isConfirmed,
+      }));
+      const nextViewNow = viewNow === views.length - 1 ? viewNow : viewNow + 1;
+      this.setState({
+        views: newViews,
+        viewNow: nextViewNow,
       });
     }
+  };
+  handleNext = () => {
+    const { views, viewNow } = this.state;
+    this.setState({
+      viewNow: views.length - 1 === viewNow ? viewNow : viewNow + 1,
+    });
   };
   render () {
     const {
@@ -209,102 +236,140 @@ class Component extends React.Component {
       quantityForEach,
       price,
       viewNow,
+      selected,
     } = this.state;
-    const { classes, loading, translate, handleMenuClick, ...props } = this.props;
+    const {
+      classes,
+      loading,
+      translate,
+      handleMenuClick,
+      open,
+      onClose,
+      onSubmit,
+      ...props,
+    } = this.props;
+    const disabled = this.isDisabled();
+    const confirmedAll = views.every(o => o.isConfirmed);
     return (
       <Dialog
-        title={"title"}
-        onSubmit={this.handleSubmit}
-        disabled={this.isDisabled()}
-        {...props}
+        fullScreen
+        aria-labelledby="dialog"
+        aria-describedby="dialog_description"
+        open={open}
+        onClose={onClose}
       >
+        <DialogTitle
+          className={classes.title}
+        >
+          <Text className={classes.titleText}>
+            시안 컨펌
+          </Text>
+        </DialogTitle>
         {loading ? <Loader/> : null}
         <div className={classes.layout}>
-          <div className={classes.imgWrapper}>
-            <div
-              className={classes.img}
+          <List className={classes.list}>
+            <ListItem
+              className={classNames({
+                [classes.selected]: viewNow === -1,
+              })}
+              dense
+              button
+              onClick={() => this.changeViews(-1)}
             >
-              <img
-                className={classes.img}
-                width={150}
-                src={views[viewNow].thumbnails[0]}
+              <ListItemText
+                className={classes.listItemText}
+                primary="기본 프로젝트 시안"
+                secondary="주문에 들어가지 않습니다."
               />
-            </div>
+            </ListItem>
+            <ListItem
+              onClick={() => this.handleConfirm(confirmedAll ? -2 : -1)}
+              button
+              dense
+            >
+              <ListItemText primary={confirmedAll ? "전체 컨펌 취소" : "전체 컨펌"}/>
+            </ListItem>
+            {
+              views.map((o, i) => (
+                <ListItem
+                  dense
+                  key={i}
+                  onClick={() => this.changeViews(i)}
+                  button
+                  className={viewNow === i ? classes.selected:null}
+                >
+                  <ListItemText primary={`Data ${i+1}`}/>
+                  {
+                    o.isConfirmed ?
+                      <ListItemIcon className={classes.icon}>
+                        <ConfirmedIcon/>
+                      </ListItemIcon> : null
+                  }
+                </ListItem>
+              ))
+            }
+          </List>
+          <div className={classes.inputs}>
+            {
+              viewNow > -1 ?
+                <Text variant="subheading" gutterBottom>
+                  {`Data ${viewNow + 1}`}
+                </Text>:null
+            }
+            {
+              viewNow > -1 && views[viewNow] ? views[viewNow].data.map(o => (
+                <TextField
+                  key={`${o.title}`}
+                  className={classes.field}
+                  label={o.title}
+                  fullWidth
+                  value={o.value}
+                  onChange={this.handleViewerDataChange(o.title)}
+                />
+              )) : null
+            }
           </div>
-          <div className={classes.center}>
-            <IconButton onClick={() => this.changeViews('left')} color="primary">
-              <LeftIcon/>
-            </IconButton>
-            <Text style={{ display: 'inline-block' }}>
-              {
-                `${viewNow + 1}/${views.length}`
-              }
-            </Text>
-            <IconButton onClick={() => this.changeViews('right')} color="primary">
-              <RightIcon/>
-            </IconButton>
-          </div>
-          {
-            views[viewNow].inputs.map(o => (
-              <TextField
-                key={`${o.page}${o.label}${o.value}`}
-                className={classes.field}
-                label={o.label}
-                fullWidth
-                value={o.value}
-              />
-            ))
-          }
-          <div className={classes.margin}/>
-          <hr />
-          <div className={classes.margin}/>
-          <Text variant="headline" align="center" gutterBottom>주문 정보</Text>
-          <TextField
-            className={classes.field}
-            label={"상품명"}
-            fullWidth
-            value={productName}
-            disabled
-          />
-          <TextField
-            className={classes.field}
-            label={"사이즈"}
-            fullWidth
-            value={sizeName}
-            disabled
-          />
-          <TextField
-            className={classes.field}
-            label={"개별 수량"}
-            fullWidth
-            value={quantityForEach}
-            type="number"
-            onChange={this.handleChange('quantityForEach')}
-          />
-          <TextField
-            className={classes.field}
-            label={"개별 가격"}
-            fullWidth
-            value={price}
-            type="number"
-            disabled
-          />
-          <TextField
-            className={classes.field}
-            label={"총 수량"}
-            fullWidth
-            value={quantityForEach * views.length}
-            type="number"
-            disabled
-          />
-          <TextField
-            className={classes.field}
-            label={"총 가격"}
-            fullWidth
-            value={price * views.length * quantityForEach}
-            disabled
-          />
+          <div className={classes.viewer} id="viewer"/>
         </div>
+        <DialogActions className={classes.actions}>
+          {
+            viewNow > -1 ?
+              <Button
+                disabled={disabled}
+                color={views[viewNow].isConfirmed ? "secondary":"primary"}
+                onClick={() => this.handleConfirm(viewNow)}
+                size="large"
+                variant={views[viewNow].isConfirmed ? "raised":"outlined"}
+              >
+                {views[viewNow].isConfirmed ? '컨펌 취소' : '컨펌'}
+              </Button>  : null
+          }
+          <Button
+            disabled={disabled}
+            color="primary"
+            onClick={this.handleNext}
+            size="large"
+            variant="outlined"
+          >
+            다음
+          </Button>
+          <Button
+            disabled={disabled}
+            color="primary"
+            onClick={onSubmit}
+            variant="raised"
+            size="large"
+          >
+            저장
+          </Button>
+          <Button
+            color="primary"
+            onClick={onClose}
+            size="large"
+          >
+            닫기
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

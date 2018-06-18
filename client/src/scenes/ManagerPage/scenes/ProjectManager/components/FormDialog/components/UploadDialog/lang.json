@@ -1,14 +1,12 @@
 {
-  "Type": ["Type", "타입", "タイプ"],
-  "ServiceManager": ["Service Manager", "서비스 관리자", "サービスマネージャ"],
-  "Supervisor": ["Supervisor", "슈퍼바이저", "スーパーバイザ"],
-  "Franchisee": ["Franchisee", "가맹점", "加盟店"],
-  "Select": ["Select", "선택", "選択"],
-  "PasswordChar": ["More than 8 character", "8자 이상", "8文字以上"],
-  "Password": ["Password", "비밀번호", "パスワード"],
-  "Name": ["Name", "이름", "名"],
-  "Location": ["Location", "위치", "所在地"],
-  "Phone": ["Phone Number", "전화번호", "電話番号"],
-  "Email": ["e-mail", "이메일", "Eメール"],
-  "SupervisorName": ["Supervisor Company", "슈퍼바이저 업체", "スーパーバイザーの会社"]
+  "ApprovalOfDrafts": ["Approval of Drafts", "시안 컨펌", "下書きの承認"],
+  "BasicDraft": ["Basic Draft", "기본 시안", "基本草案"],
+  "NotIncluded": ["Not included in order", "주문에 포함되지 않습니다", "順序に含まれない"],
+  "ConfirmAll": ["Confirm All", "전체 컨펌", "すべてを確認する"],
+  "CancelConfirmAll": ["Cancel All Confirmed", "전체 컨펌 취소", "すべての確認済みのキャンセル"],
+  "Confirm": ["Confirm", "컨펌", "確認する"],
+  "CancelConfirm": ["Cancel Confirmed", "컨펌 취소", "確認を取り消す"],
+  "Save": ["Save", "저장", "セーブ"],
+  "Next": ["Next", "다음", "次"],
+  "Close": ["Close", "닫기", "閉じる"]
 }

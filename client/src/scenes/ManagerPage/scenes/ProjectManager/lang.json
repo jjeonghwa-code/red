@@ -5,5 +5,6 @@
   "Size": ["Size", "크기", "サイズ"],
   "ProductName": ["Product Name", "상품명", "商品名"],
   "Quantity": ["Quantity", "수량", "数量"],
-  "Price": ["Price", "가격", "価格"]
+  "Price": ["Price", "가격", "価格"],
+  "ProjectOrderForm":["Project Order Form", "프로젝트 주문서", "プロジェクト書"]
 }

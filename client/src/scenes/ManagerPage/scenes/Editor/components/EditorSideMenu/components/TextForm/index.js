@@ -90,7 +90,7 @@ class Component extends React.Component {
                 value={o.data.text}
                 onChange={e => handleChange(o, e)}
               />
-              <ListItemIcon className={classNames({ [classes.hideIcon] : this.state.hovered !== o })}>
+              <ListItemIcon className={classNames({ [classes.hideIcon] : true })}>
                 <IconButton
                   color="primary"
                   className={classes.listItemContent}
@@ -108,7 +108,7 @@ class Component extends React.Component {
           </ListItemIcon>
           <ListItemText
             classes={{ primary: classes.listItemPrimary }}
-            primary="새로 추가하기"
+            primary={lang.AddNew[translate]}
           />
         </ListItem>
       </React.Fragment>

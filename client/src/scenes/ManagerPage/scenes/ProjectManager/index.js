@@ -24,23 +24,29 @@ class Scene extends React.Component {
   constructor(props) {
     super(props);
     this.state = initialState;
-    this.props.requestProjectList({ accountId: this.props.auth.response.id });
+    this.props.requestProjectList({
+      accountId: this.props.auth.response.id,
+    });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.projectList.loading) {
       this.setState(initialState);
     }
   }
+  componentWillUnmount() {
+    this.props.handleSelect([]);
+  }
   handleTableRowClick = (input) => {
+    const selected = this.props.projectList.response.find(o => o.id === input);
     this.setState({
       formDialogOn: true,
-      selectedRow: this.props.projectList.response.find(o => o.id === input),
+      selectedRow: selected,
     });
-    // this.props.push(`/editor/${input}`);
   };
   handleTableMenuClick = (name, data) => {
     switch(name) {
       case 'create': this.props.push('/editor');
+        this.props.handleSelect([]);
         break;
       case 'remove':
         const { editor } = this.props.editor.response;
@@ -49,6 +55,7 @@ class Scene extends React.Component {
           projects,
           editor,
         });
+        this.props.handleSelect([]);
         break;
       default:
         break;
@@ -74,7 +81,7 @@ class Scene extends React.Component {
   };
   render() {
     const { formDialogOn, selectedRow } = this.state;
-    const { translate, projectList, remove, update, editor } = this.props;
+    const { translate, projectList, remove, update, editor, auth } = this.props;
     return (
       <React.Fragment>
         {
@@ -85,23 +92,24 @@ class Scene extends React.Component {
               title={lang.Project[translate]}
               data={projectList.response.map(o => ({
                 ...o,
-                quantityForVariableData: o.variableData ?
-                  `${o.variableData.views.length}(가변) * ${o.quantity}` : undefined,
-                sumOfPrice: o.variableData ? o.quantity * o.price * o.variableData.views.length : o.quantity * o.price,
+                quantityForViews: o.views && o.views.length ?
+                  `${o.views.length * o.quantity}(${o.views.length}*${o.quantity})` : undefined,
+                sumOfPrice: o.views.length ? o.quantity * o.price * o.views.length : o.quantity * o.price,
               }))}
               handleRowClick={this.handleTableRowClick}
               handleMenuClick={this.handleTableMenuClick}
+              handleSelect={this.props.handleSelect}
               columnData={[
                 { id: 'thumbnails', thumbnails: true, numeric: false, disablePadding: false, label: lang.Thumbnail[translate] },
                 { id: 'productName', numeric: false, disablePadding: false, label: lang.ProductName[translate] },
                 { id: 'sizeName', numeric: false, disablePadding: false, label: lang.Size[translate]},
-                { id: 'quantity', variantValue: 'quantityForVariableData',numeric: false, disablePadding: false, label: lang.Quantity[translate]},
+                { id: 'quantity', variantValue: 'quantityForViews', numeric: false, disablePadding: false, label: lang.Quantity[translate]},
                 { id: 'sumOfPrice', numeric: false, disablePadding: false, label: lang.Price[translate]},
               ]}
             /> : <Error/>
         }
         <FormDialog
-          title={"프로젝트 주문서"}
+          title={lang.ProjectOrderForm[translate]}
           loading={update.loading}
           open={formDialogOn}
           onClose={() => this.setState({
@@ -111,6 +119,7 @@ class Scene extends React.Component {
           handleSubmit={this.handleFormSubmit}
           handleMenuClick={this.handleFormMenuClick}
           editor={editor.response ? editor.response.editor : null}
+          batchNotAllowed={auth.response.type === 'franchisee' }
         />
       </React.Fragment>
     );

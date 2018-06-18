@@ -50,6 +50,11 @@ class Component extends React.Component {
       hoveredItemId: null, // only for thumbnails
     };
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.selected !== this.state.selected) {
+      this.props.handleSelect(this.state.selected);
+    }
+  }
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = 'desc';
@@ -166,7 +171,7 @@ class Component extends React.Component {
                               <div className={classes.imgWrapper}>
                                 <img
                                   className={classes.img}
-                                  src={hoveredItemId === n.id ? n.thumbnails[1] : n.thumbnails[0]}
+                                  src={hoveredItemId === n.id && n.thumbnails.length > 1 ? n.thumbnails[1] : n.thumbnails[0]}
                                   onMouseEnter={() => this.setState({
                                     hoveredItemId: n.id,
                                   })}

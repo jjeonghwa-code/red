@@ -11,6 +11,8 @@ nconf
     'NODE_ENV',
     'PORT',
     'SECRET',
+    'RED_API_URL',
+    'RED_API_TOKEN',
   ])
   // 3. Config file
   .file({ file: path.join(__dirname, '../', 'config.json') })
@@ -31,5 +33,7 @@ function checkConfig(setting) {
 if (nconf.get('DATA_BACKEND') === 'mongodb') {
   checkConfig('MONGO_URL');
 }
+checkConfig("RED_API_URL");
+checkConfig("RED_API_TOKEN");
 
 export default nconf;

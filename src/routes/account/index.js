@@ -102,7 +102,9 @@ router.post(
     const { id, franchiseeId } = req.body;
     try {
       const franchiseeAccount = await Account.findById(franchiseeId);
-      if (!id || String(franchiseeAccount.rootId) === id) {
+      if (!id) {
+        res.json(null);
+      } else if (String(franchiseeAccount.rootId) === id) {
         res.json(fromMongo(franchiseeAccount.toObject()));
       } else {
         res.status(400).json({

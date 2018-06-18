@@ -25,13 +25,14 @@ import Content from './components/Content';
 import ContactDialog from '../../components/ContactDialog';
 import AccountManager from './scenes/AccountManager';
 import ProjectManager  from './scenes/ProjectManager';
-import CompletedManager from './scenes/CompletedManager';
+import OrderedManager from './scenes/OrderedManager';
 import ViewDialog from './components/ViewDialog';
 import SecondaryAccountDialog from './components/SecondaryAccountDialog';
 import Setting from './scenes/Setting';
 import lang from './lang';
 import Loader from '../../components/Loader';
 import Editor from './scenes/Editor';
+import { order } from './data/order/actions';
 
 class Scene extends React.Component {
   constructor(props) {
@@ -43,13 +44,13 @@ class Scene extends React.Component {
       viewDialogData: [],
       secondaryAccountDialogOn: false,
       editorModeOn: false,
+      selectedProjects: [], //
     };
     this.handleFranchiseeLogin();
     const { id } = this.props.auth.response;
     this.props.requestEditor({
       userId: id,
     });
-    console.log('ManagerPage Constructor');
   }
   handleLogout = () => {
     removeUserTokenFromCookie();
@@ -125,6 +126,9 @@ class Scene extends React.Component {
       case 'franchiseeLogout':
         this.handleFranchiseeLogout();
         break;
+      case 'order':
+        this.handleOrder();
+        break;
       default:
         break;
     }
@@ -144,8 +148,12 @@ class Scene extends React.Component {
       });
     }
   };
+  handleOrder = () => {
+    const { selectedProjects } = this.state;
+    this.props.requestOrder(selectedProjects);
+  };
   render() {
-    const { auth, franchiseeList, franchiseeLogin, editor, push } = this.props;
+    const { auth, franchiseeList, franchiseeLogin, editor, push, order } = this.props;
     const {
       contactDialogOn,
       selectedSideMenu,
@@ -153,10 +161,11 @@ class Scene extends React.Component {
       viewDialogTitle,
       viewDialogData,
       secondaryAccountDialogOn,
+      selectedProjects,
     } = this.state;
     return (
       <Layout>
-        { editor.loading ? <Loader/> : null }
+        { editor.loading || order.loading ? <Loader/> : null }
         <Switch>
           <Route
             exact
@@ -193,6 +202,7 @@ class Scene extends React.Component {
               loading={franchiseeLogin.loading}
               franchisee={franchiseeLogin.response}
               handleClick={this.handleHeaderClick}
+              disabled={!selectedProjects.length}
             />
             <Route
               path="/:menu"
@@ -215,11 +225,19 @@ class Scene extends React.Component {
               />
               <Route
                 path="/project"
-                component={ProjectManager}
+                render={props => (
+                  <ProjectManager
+                    {...props}
+                    selectedProjects={selectedProjects}
+                    handleSelect={d => this.setState({
+                      selectedProjects: d,
+                    })}
+                  />
+                )}
               />
               <Route
-                path="/completed"
-                component={CompletedManager}
+                path="/ordered"
+                component={OrderedManager}
               />
             </Content>
           </React.Fragment>
@@ -257,6 +275,7 @@ const mapStateToProps = state => ({
   franchiseeList: state.ManagerPage.data.franchiseeList,
   franchiseeLogin: state.ManagerPage.data.franchiseeLogin,
   editor: state.ManagerPage.data.editor,
+  order: state.ManagerPage.data.order,
 });
 const mapDispatchToProps = dispatch => bindActionCreators({
   push,
@@ -264,6 +283,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   requestFranchiseeList: franchiseeList.request,
   requestFranchiseeLogin: franchiseeLogin.request,
   requestEditor: editor.request,
+  requestOrder: order.request,
 }, dispatch);
 export default withRouter(connect(
   mapStateToProps,

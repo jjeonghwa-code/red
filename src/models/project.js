@@ -9,7 +9,7 @@ const Project = new Schema({
   psCode:String,
   templateToken: String,
   datetime: {
-    type: Number,
+    type: Date,
     default: Date.now,
   },
   quantity: {
@@ -20,12 +20,14 @@ const Project = new Schema({
     type: Number,
     default: 1000,
   },
-  variableData: Object,
+  views: Array, // variableData
+  order_datetime: {
+    type: Date,
+  },
   order_status: {
     type: Number,
     default: 0,
   }, // 0: not_ordered, 1: tentative, 2: definitive
-
   userId: String,
   projectId: String,
   token: String, //templateToken

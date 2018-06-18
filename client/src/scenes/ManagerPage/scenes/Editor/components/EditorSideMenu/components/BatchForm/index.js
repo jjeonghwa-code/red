@@ -78,8 +78,8 @@ class Component extends React.Component {
               primary: classes.text,
               secondary: classes.secondaryText,
             }}
-            primary="배치 폼 다운로드"
-            secondary={disabled ? "저장이 되어야 합니다." : null}
+            primary={lang.DownloadForm[translate]}
+            secondary={disabled ? lang.LabelOfDownloadForm[translate] : null}
           />
         </ListItem>
       </React.Fragment>

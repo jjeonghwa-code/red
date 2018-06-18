@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import request from 'request';
 import logging from '../../lib/logging';
 import {
   fromMongo,
@@ -8,6 +9,7 @@ import {
   Project,
 } from '../../models';
 import auth from '../../auth';
+import config from '../../config';
 
 const router = express.Router();
 const NAME = ['Project', '프로젝트', 'プロジェクト'];
@@ -72,13 +74,70 @@ router.post(
     }
   },
 );
-// 인증
-router.get(
-  '/completedList',
+router.put(
+  '/order',
   async (req, res) => {
     const ERROR_MESSAGE = 'ERROR';
     try {
-      const projects = await Project.find({ isCompleted: true });
+      const projectIds = req.body;
+      const projects = await Project.find({
+        _id: { $in: projectIds.map(mongoose.Types.ObjectId) },
+        order_status: 0,
+      });
+      const body = [];
+      projects.forEach(project => {
+        body.push({
+          userId: String(project.accountId),
+          projectId: project.projectId,
+          token: project.templateToken,
+          orderInfo: {
+            order_count: project.quantity,
+            total_price: project.quantity * project.price,
+          },
+        });
+      });
+      const api = config.get('RED_API_URL');
+      const token = config.get('RED_API_TOKEN');
+      request.post(`${api}/v1/orders`, {
+        json: true,
+        body: body,
+        auth: {
+          'bearer': token,
+        },
+      }, (err, resp, body) => {
+        console.log(body);
+        res.json(fromMongo(projects.map(o => o.toObject())));
+      });
+      await Project.updateMany({
+        _id: { $in: projects.map(o => o._id) },
+      }, {
+        $set: {
+          order_status: 1,
+          order_datetime: Date.now(),
+        },
+      });
+    } catch (error) {
+      logging.error(error);
+      return res.status(400).json({
+        message: ERROR_MESSAGE,
+      });
+    }
+  },
+);
+router.post(
+  '/orderedList',
+  async (req, res) => {
+    const ERROR_MESSAGE = 'ERROR';
+    try {
+      const { accountId, franchiseeId } = req.body;
+      const accArr = [mongoose.Types.ObjectId(accountId)];
+      if (franchiseeId) {
+        accArr.push(mongoose.Types.ObjectId(franchiseeId))
+      }
+      const projects = await Project.find({
+        accountId: { $in: accArr },
+        order_status: { $in: [1, 2] }
+      });
       res.json(fromMongo(projects.map(o => o.toObject())));
     } catch (error) {
       logging.error(error);

@@ -141,7 +141,7 @@ class Component extends React.Component {
               className={classes.orderButton}
               onClick={() => handleClick(editorMode ? 'save':'order')}
             >
-              { editorMode ? '저장':lang.Order[translate]}
+              { editorMode ? lang.Save[translate]:lang.Order[translate]}
             </Button>
           </div>
         </div>

@@ -5,5 +5,6 @@
   "Logout": ["Log Out", "로그아웃", "ログアウト"],
   "FranchiseeLogin": ["Login to Franchisee Account", "가맹점 로그인", "加盟店ログイン"],
   "FranchiseeLogout": ["Log Out of Franchisee Account", "가맹점 로그아웃", "加盟店ログアウト"],
-  "AccountInfo": ["Account Info", "계정 정보", "アカウント情報"]
+  "AccountInfo": ["Account Info", "계정 정보", "アカウント情報"],
+  "Save": ["Save", "저장", "セーブ"]
 }

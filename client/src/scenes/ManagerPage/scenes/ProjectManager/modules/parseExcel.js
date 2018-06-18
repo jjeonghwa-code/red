@@ -35,7 +35,10 @@ export default function (file) {
 
       inputData.forEach(row => {
         const base = [];
-        const view = [];
+        const view = {
+          data: [],
+          isConfirmed: false,
+        };
         row.forEach((col, i) => {
           const baseItem = {};
           const viewItem = {};
@@ -63,15 +66,11 @@ export default function (file) {
             }
           }
           base.push(baseItem);
-          view.push(viewItem);
+          view.data.push(viewItem);
         });
         parsed.bases.push(base);
         parsed.views.push(view);
       });
-      console.log(inputData);
-      console.log(forms);
-      console.log(jsons);
-      console.log(parsed);
       resolve(parsed);
     };
     reader.onerror = function (e) {

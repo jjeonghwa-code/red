@@ -1,4 +1,5 @@
 {
-  "Account": ["Account", "계정", "アカウント"],
-  "Setting": ["Setting", "설정", "設定"]
+  "TemplateSelection": ["Template Selection", "템플릿 선택", "テンプレート選択"],
+  "ProductSelection": ["Product Selection", "상품 선택", "製品の選択"],
+  "UseDev": ["Template For Dev", "개발용 템플릿 사용", "開発のためのテンプレート"]
 }

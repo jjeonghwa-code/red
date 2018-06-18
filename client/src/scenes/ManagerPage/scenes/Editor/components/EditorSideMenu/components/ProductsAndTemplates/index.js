@@ -86,7 +86,19 @@ class Component extends React.Component {
         <ListItem className={classes.title}>
           <ListItemText
             classes={{ primary: classes.productName }}
-            primary={productSelected ? '템플릿 선택' : '상품 선택'}
+            primary={productSelected ?
+              lang.TemplateSelection[translate] : lang.ProductSelection[translate]}
+          />
+        </ListItem>
+        <ListItem
+          dense
+          button
+          className={classes.productItem}
+          onClick={() => handleClick('dev')}
+        >
+          <ListItemText
+            classes={{ primary: classes.productName }}
+            primary={lang.UseDev[translate]}
           />
         </ListItem>
         {

@@ -43,6 +43,7 @@ const styles = theme => ({
   },
   list: {
     paddingTop: 0,
+    overflowY: 'auto',
   },
   toolbar: theme.mixins.toolbar,
   listItemContent: {
@@ -121,6 +122,7 @@ class Component extends React.Component {
       forms,
       productsAndTemplates,
       batchDisabled,
+      batchNotAllowed
     } = this.props;
     const {
       menu,
@@ -146,7 +148,7 @@ class Component extends React.Component {
                 <ClassIcon className={classes.centerListItemContent}/>
               </ListItemIcon>
               <Text className={classes.menuText}>
-                템플릿
+                {lang.Template[translate]}
               </Text>
             </ListItem>
             <ListItem dense className={classNames(classes.centerListItem, { [classes.centerListItemSelected] : menu === 'text'})} button onClick={this.handleMenuChange('text')}>
@@ -154,7 +156,7 @@ class Component extends React.Component {
                 <TextIcon className={classes.centerListItemContent}/>
               </ListItemIcon>
               <Text className={classes.menuText}>
-                텍스트
+                {lang.Text[translate]}
               </Text>
             </ListItem>
             <ListItem dense className={classNames(classes.centerListItem, { [classes.centerListItemSelected] : menu === 'image'})} button onClick={this.handleMenuChange('image')}>
@@ -162,17 +164,20 @@ class Component extends React.Component {
                 <ImageIcon className={classes.centerListItemContent}/>
               </ListItemIcon>
               <Text className={classes.menuText}>
-                이미지
+                {lang.Image[translate]}
               </Text>
             </ListItem>
-            <ListItem dense className={classNames(classes.centerListItem, { [classes.centerListItemSelected] : menu === 'batch'})} button onClick={this.handleMenuChange('batch')}>
-              <ListItemIcon>
-                <ManyIcon className={classes.centerListItemContent}/>
-              </ListItemIcon>
-              <Text className={classes.menuText}>
-                배치
-              </Text>
-            </ListItem>
+            {
+              batchNotAllowed ? null:
+                <ListItem dense className={classNames(classes.centerListItem, { [classes.centerListItemSelected] : menu === 'batch'})} button onClick={this.handleMenuChange('batch')}>
+                  <ListItemIcon>
+                    <ManyIcon className={classes.centerListItemContent}/>
+                  </ListItemIcon>
+                  <Text className={classes.menuText}>
+                    {lang.Batch[translate]}
+                  </Text>
+                </ListItem>
+            }
           </List>
         </Drawer>
         <Drawer

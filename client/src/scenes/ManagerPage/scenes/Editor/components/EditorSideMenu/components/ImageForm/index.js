@@ -64,7 +64,7 @@ class Component extends React.Component {
           </ListItemIcon>
           <ListItemText
             classes={{ primary: classes.listItemPrimary }}
-            primary="새로 추가하기"
+            primary={lang.AddNew[translate]}
           />
         </ListItem>
       </React.Fragment>
