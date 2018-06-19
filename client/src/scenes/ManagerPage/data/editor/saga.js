@@ -31,6 +31,11 @@ function* get({ params }) {
       accessToken: token,
       sandboxMode: true,
     });
+    Editor.on('create', (e) => console.log('create completed',e));
+    Editor.on('load', (e) => {
+      console.log('load completed',e);
+      console.log(Editor.getCurrentTemplateVdpList());
+    });
     window._editor = Editor;
     yield put(editor.success(params, {
       editor: Editor,

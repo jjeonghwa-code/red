@@ -31,6 +31,7 @@ const initState = {
   mode: 'create',
   views: [],
   viewNow: -1,
+  loading: true,
 };
 const styles = theme => ({
   dialog: {
@@ -38,7 +39,7 @@ const styles = theme => ({
   },
   layout: {
     display: 'flex',
-    alignItems: 'stretch',
+    flex: 'auto',
     height: '100%',
     background: '#f0f0f0',
   },
@@ -77,21 +78,21 @@ const styles = theme => ({
     margin: theme.spacing.unit * 2,
   },
   list: {
-    width: 375,
+    width: 200,
     paddingTop: 0,
     paddingBottom: 0,
     maxHeight: '100%',
-    overflow: 'auto',
+    overflowY: 'auto',
   },
   inputs: {
-    width: 200,
-    padding: theme.spacing.unit,
+    width: 250,
+    overflowY: 'auto',
   },
   viewer: {
-    width: '100%',
     padding: theme.spacing.unit * 3,
     height: 'auto',
     minHeight: 500,
+    flexGrow:1,
   },
   icon: {
     marginRight: 0,
@@ -106,6 +107,11 @@ const styles = theme => ({
   },
   listItemText: {
     padding: 0,
+  },
+  page: {
+    color: theme.palette.primary.contrastText,
+    background: theme.palette.primary.main,
+    padding: theme.spacing.unit / 2,
   },
 });
 class Component extends React.Component {
@@ -122,20 +128,29 @@ class Component extends React.Component {
         id,
         views,
         viewNow: -1,
+        loading: true,
       });
     }
   }
   componentDidUpdate(prevProps, prevState) {
     if (!prevProps.open && this.props.open) {
+      const { editor } = this.props;
+      editor.on('load', () => {
+        this.setState({
+          loading: false,
+        });
+      });
       setTimeout(() => {
-        this.props.editor.openVdpViewer({
+        const max = this.props.data.views[0].data.map(o => parseInt(o.page)).reduce((a, b) =>
+          Math.max(a, b)
+        );
+        editor.openVdpViewer({
           projectId: this.props.data.projectId,
           selector: '#viewer',
-        }, (e, data) => {
-          console.log('viewer', String(data));
+          npage: max+1,
         });
         this.setState({ viewerOn: true });
-      }, 700);
+      }, 500);
     } else if (prevProps.open && !this.props.open) {
       const viewer = document.getElementById('viewer');
       while(viewer.firstChild) {
@@ -238,10 +253,10 @@ class Component extends React.Component {
       price,
       viewNow,
       selected,
+      loading,
     } = this.state;
     const {
       classes,
-      loading,
       translate,
       handleMenuClick,
       open,
@@ -320,16 +335,28 @@ class Component extends React.Component {
                 </Text>:null
             }
             {
-              viewNow > -1 && views[viewNow] ? views[viewNow].data.map(o => (
-                <TextField
-                  key={`${o.title}`}
-                  className={classes.field}
-                  label={o.title}
-                  fullWidth
-                  value={o.value}
-                  onChange={this.handleViewerDataChange(o.title)}
-                />
-              )) : null
+              viewNow > -1 && views[viewNow] ? views[viewNow].data.map((o, i) => {
+                const prev = views[viewNow].data[i - 1];
+                return (
+                  <React.Fragment
+                    key={`${o.id}`}
+                  >
+                    {
+                      !prev || prev.page !== o.page ?
+                        <React.Fragment>
+                        <Text className={classes.page}>{`Page ${parseInt(o.page) + 1}`}</Text>
+                        </React.Fragment> : null
+                    }
+                    <TextField
+                      className={classes.field}
+                      label={o.title}
+                      fullWidth
+                      value={o.value}
+                      onChange={this.handleViewerDataChange(o.title)}
+                    />
+                  </React.Fragment>
+                );
+              }) : null
             }
           </div>
           <div className={classes.viewer} id="viewer"/>

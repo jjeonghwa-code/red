@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Route,
-  Switch,
   withRouter,
 } from 'react-router-dom';
 import update from 'react-addons-update';
@@ -13,6 +11,7 @@ import makeExcel from './modules/makeExcel';
 import lang from './lang';
 import Loader from '../../../../components/Loader';
 import Header from '../../components/Header';
+import TextTitle from './components/TextTitle';
 import {
   get,
 } from './data/get/actions';
@@ -46,6 +45,7 @@ class Scene extends React.Component {
       events: [],
       project: null,
       loading: false,
+      textTitleDialogOn: false,
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -71,16 +71,19 @@ class Scene extends React.Component {
             id,
             thumbnails,
           },
+          loading: true,
         });
       }
     }
   }
   componentDidMount() {
     const { editor } = this.props.editor.response;
-    window._editor = editor;
     editor.on('create', (e) => console.log('create completed',e));
     editor.on('load', (e) => {
       console.log('load completed',e);
+      this.setState({
+        loading: false,
+      });
     });
     editor.on('change', (e) => {
       this.setState((prevState) => {
@@ -179,6 +182,7 @@ class Scene extends React.Component {
           price: defaultPrice,
           templateToken: token,
         },
+        loading: true,
       });
     }
   };
@@ -198,7 +202,9 @@ class Scene extends React.Component {
         console.log(data);
         break;
       case 'addText':
-        this.handleAddText();
+        this.setState({
+          textTitleDialogOn: true,
+        });
         break;
       case 'productClick':
         this.props.requestTemplateList({
@@ -208,7 +214,6 @@ class Scene extends React.Component {
             limit: 9999,
           },
         });
-        // this.getTemplateList({ code: data.code });
         break;
       case 'templateClick':
         this.createProject(data);
@@ -217,7 +222,7 @@ class Scene extends React.Component {
         this.handleAddImage();
         break;
       case 'download':
-        makeExcel(this.state.changeables, editor.getProjectId());
+        makeExcel(editor.getCurrentTemplateVdpList().variableDataList, editor.getProjectId());
         break;
       default:
         break;
@@ -235,9 +240,6 @@ class Scene extends React.Component {
 
     newChangeables = update(
       newChangeables, { $splice: [[foundI, 1, changeable]] });
-    this.setState({
-      changeables: newChangeables,
-    });
 
     const { editor } = this.props.editor.response;
     const { path, data, variable } = changeable;
@@ -248,6 +250,10 @@ class Scene extends React.Component {
       path,
       variable,
     });
+
+    this.setState({
+      changeables: newChangeables,
+    });
   };
   handleAddImage = (info =  {
     src_type: 'file-input',
@@ -257,20 +263,18 @@ class Scene extends React.Component {
     const { editor } = this.props.editor.response;
     editor.remoteEditor('add-image', info);
   };
-  handleAddText = () => {
-    // 텍스트 폼 추가 부분
+  handleAddText = (title) => {
     const { changeables, addTextNum } = this.state;
     const { editor } = this.props.editor.response;
 
     const num = addTextNum === 0 ? changeables.length : addTextNum + 1;
-    //*
     const newText = {
       name: `text_${num}`,
       feature: 'var:text',
       variable: {
         id: `textId_${num}`,
         extra: null,
-        title: `Text#${num}`,
+        title,
       },
       data: {
         text: lang.Text[this.props.translate],
@@ -280,6 +284,7 @@ class Scene extends React.Component {
     };
     this.setState({
       addTextNum: num,
+      textTitleDialogOn: false,
     });
     editor.remoteEditor('add-text', newText);
   };
@@ -309,16 +314,17 @@ class Scene extends React.Component {
       save,
       get,
       match,
+      translate,
     } = this.props;
-    const { editor } = this.props.editor.response;
     const {
       changeables,
-      events,
       project,
+      textTitleDialogOn,
+      loading,
     } = this.state;
     return (
       <React.Fragment>
-        { get.loading || save.loading ? <Loader isGlobal/> : null }
+        { loading || get.loading || save.loading ? <Loader isGlobal/> : null }
         <Header
           account={auth.response}
           franchisee={franchisee}
@@ -341,6 +347,14 @@ class Scene extends React.Component {
         />
         <Layout id="editor" />
         <div id="viewer"/>
+        <TextTitle
+          open={textTitleDialogOn}
+          title={lang.AddText[translate]}
+          onSubmit={this.handleAddText}
+          onClose={() => this.setState({
+            textTitleDialogOn: false,
+          })}
+        />
       </React.Fragment>
     );
   }

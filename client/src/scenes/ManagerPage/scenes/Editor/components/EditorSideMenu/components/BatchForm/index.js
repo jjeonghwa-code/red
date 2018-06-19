@@ -79,7 +79,7 @@ class Component extends React.Component {
               secondary: classes.secondaryText,
             }}
             primary={lang.DownloadForm[translate]}
-            secondary={disabled ? lang.LabelOfDownloadForm[translate] : null}
+            secondary={lang.LabelOfDownloadForm[translate]}
           />
         </ListItem>
       </React.Fragment>

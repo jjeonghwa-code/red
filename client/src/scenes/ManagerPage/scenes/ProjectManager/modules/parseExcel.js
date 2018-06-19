@@ -21,50 +21,73 @@ export default function (file) {
         views: [],
       };
       parsed.projectId = jsons[0][0][1];
-      // jsons[0].forEach(o => {
-      //   const reg = /^(?:#)([0-9]+)/g.exec(o);
-      //   if (reg) {
-      //     console.log(reg);
-      //   }
-      // });
-      const forms = jsons[1][0].map((o, i) => (
-        jsons[1].map((oo, ii) => jsons[1][ii][i])
-      ));
-      const inputData = forms.splice(1, forms.length);
-      //forms: #1,#2...
 
-      inputData.forEach(row => {
+      let titles = [];
+      let forms = [];//jsons[1];
+      jsons.forEach((page, p) => {
+        if (p > 0) {
+          titles = titles.concat(page.map(o => ({
+            page: String(p - 1),
+            value: o[0],
+          })));
+          forms = forms.concat(page.map(o => o.slice(1, o.length)));
+        }
+      });
+      forms = forms[0].map((o, i) => (
+        forms.map((oo, ii) => forms[ii][i])
+      ));
+      const idMap = [];
+
+      const keys = jsons[0].map(o => o[0]);
+
+      let startI = 0;
+      let endI = 0;
+      let foundI = keys.indexOf('variable.title', endI);
+      let map = {};
+      while(foundI > -1){
+        startI = foundI - 1;
+        endI = foundI + 1;
+        while (startI >= 0 && jsons[0][startI].length !== 1) {
+          startI -= 1;
+        }
+        while (endI < jsons[0].length && jsons[0][endI].length !== 1) {
+          endI += 1;
+        }
+        for (let i = startI + 1; i < endI; i += 1) {
+          const [label, value] = jsons[0][i];
+          const splitted = label.split('.');
+          if (splitted[0] === 'path' && splitted[1] === 'page_index') {
+            map.page = value;
+          }
+          if (splitted[0] === 'variable' && splitted[1] === 'id') {
+            map.id = value;
+          }
+          if (splitted[0] === 'variable' && splitted[1] === 'title') {
+            map.title = value;
+          }
+        }
+        idMap.push(map);
+        map = {};
+        foundI = keys.indexOf('variable.title', endI);
+      }
+
+      forms.forEach(row => {
         const base = [];
         const view = {
           data: [],
           isConfirmed: false,
         };
         row.forEach((col, i) => {
+          const title = titles[i];
           const baseItem = {};
-          const viewItem = {};
-          const startI = jsons[0].findIndex(j => j[0] === forms[0][i]) + 1;
-          const endI = i === row.length - 1 ? jsons[0].length : jsons[0].findIndex(j => j[0] === forms[0][i+1]);
-          for (let i = startI; i < endI; i += 1) {
-            const [ label, value ] = jsons[0][i];
-            const splitted = label.split('.');
-            if (splitted.length === 1) {
-              baseItem[splitted[0]] = value;
-            } else {
-              if (!baseItem[splitted[0]]) baseItem[splitted[0]] = {};
-              baseItem[splitted[0]][splitted[1]] = value;
+          const viewItem = {
+            title: title.value,
+            value: col,
+          };
+          const map = idMap.find(o => o.title === title.value && o.page === title.page);
+          viewItem.id = map.id;
+          viewItem.page = map.page;
 
-              if(splitted[0] === 'variable' && splitted[1] === 'id') {
-                viewItem.id = value;
-              }
-              if(splitted[0] === 'variable' && splitted[1] === 'title') {
-                viewItem.title = value;
-              }
-              if(splitted[0] === 'data' && splitted[1] === 'text') {
-                baseItem[splitted[0]][splitted[1]] = col;
-                viewItem.value = col;
-              }
-            }
-          }
           base.push(baseItem);
           view.data.push(viewItem);
         });

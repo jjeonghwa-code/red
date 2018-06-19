@@ -1,4 +1,8 @@
 {
   "DownloadForm": ["Download Form", "폼 다운로드", "フォームのダウンロード"],
-  "LabelOfDownloadForm": ["save is required", "저장이 되어야 합니다.", "セーブが必要です"]
+  "LabelOfDownloadForm": [
+    "Only content that has already been saved will be downloaded.",
+    "이미 저장된 내용만 다운로드 됩니다.",
+    "現場情報のみがダウンロードされました。"
+  ]
 }

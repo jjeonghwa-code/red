@@ -21,7 +21,6 @@ function decompose(obj) {
   return arr;
 }
 function makeBaseWorksheet (changeables, projectId) {
-  // [{ key, value }, { key, value }]
   let height = 1;
   let worksheet = {};
   worksheet[`A${height}`] = {
@@ -54,45 +53,38 @@ function makeBaseWorksheet (changeables, projectId) {
   return worksheet;
 }
 function makeFormWorksheet (ws) {
-  const worksheet = {};
+  const forms = [];
 
   //findHeight
   const ref = ws['!ref'];
   const heightOfWs = parseInt(ref.slice(ref.indexOf('B') + 1, ref.length));
 
   //make form template ex) #1, #2..
-  let objectNowIndex = 0; // #x
-  let formHeight = 1;
-  for(let i = 2; i<= heightOfWs; i += 1) {
+  let page = 0;
+  for (let i = 2; i<= heightOfWs; i += 1) {
     const label = ws[`A${i}`].v;
-    if (label.indexOf('#') === 0) {
-      objectNowIndex = label.slice(label.indexOf('#') + 1, label.length); // ex) #1, #2
-      worksheet[`A${formHeight}`] = {
-        t: 's',
-        v: `#${objectNowIndex}`,
-      };
-    } else if (label.indexOf('data.text') === 0) {
-      const value = ws[`B${i}`].v;
-      worksheet[`B${formHeight}`] = {
-        t: 's',
-        v: value,
-      };
-      ws[`B${i}`].f = `Form!${`B${formHeight}`}`;
-      formHeight += 1;
+    const page_index_i = label.indexOf('path.page_index');
+    if (page_index_i === 0) {
+      page = ws[`B${i}`].v;
+    } else if (label.indexOf('variable.title') === 0) {
+      forms[page] = forms[page] || [];
+      forms[page].push([ws[`B${i}`].v]);
     }
   }
-  worksheet['!ref'] = `A1:B${formHeight}`;
   return {
     Raw: ws,
-    Form: worksheet,
-  };
+    Forms: forms.map(XLSX.utils.aoa_to_sheet),
+  }
 }
 export default function (changeables = [], projectId = '') {
   const worksheet = makeBaseWorksheet(changeables.map(decompose), projectId);
-  const { Raw, Form } = makeFormWorksheet(worksheet);
+  const { Raw, Forms } = makeFormWorksheet(worksheet);
   const new_workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(new_workbook, Raw, "Raw");
-  XLSX.utils.book_append_sheet(new_workbook, Form, "Form");
+  Forms.forEach((o, i) => (
+    XLSX.utils.book_append_sheet(new_workbook, o, `Page${i+1}`)
+  ));
+
   XLSX.writeFile(new_workbook, 'data.xlsx', {
     type: 'string',
   })

@@ -178,9 +178,6 @@ class Component extends React.Component {
           uploadDialogOn: true,
           uploadDialogData: {
             projectId,
-            productName,
-            sizeName,
-            price,
             views,
           },
         });
@@ -265,9 +262,6 @@ class Component extends React.Component {
                             uploadDialogOn: true,
                             uploadDialogData: {
                               projectId,
-                              productName,
-                              sizeName,
-                              price,
                               views,
                             },
                           })}
